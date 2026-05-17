@@ -89,7 +89,7 @@ You should think like a senior mobile developer,
 
 ## Stack
 
-Expo SDK 55 · React Native · TypeScript (strict) · React navigation
+Expo SDK 55(https://expo.dev/changelog/sdk-55) · React Native · TypeScript (strict) · React navigation · react-native-reanimated(https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/animating-styles-and-props)
 If a new library would clearly improve the project, explain why first and ask for approval before adding it.
 
 ## State Management
@@ -155,3 +155,10 @@ export async function getProfile(userId: string) {
 ## Philosophy
 
 Build feature by feature. Smallest useful version first. Readable over clever. Refactor only when duplication hits 3+ times. If a better approach exists, say so and ask before acting.
+
+
+'Layout' is deprecated.ts(6385)
+LinearTransition.d.ts(18, 5): The declaration was marked as deprecated here.
+(alias) const Layout: typeof LinearTransition
+import Layout
+@deprecated — Please use LinearTransition instead.

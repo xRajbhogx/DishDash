@@ -1,8 +1,8 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from './HomeScreen';
 import LoginScreen from './(auth)/LoginScreen';
@@ -12,6 +12,7 @@ import RegisterScreen from './(auth)/RegisterScreen';
 import OrdersScreen from './(tabs)/OrdersScreen';
 import ProfileScreen from './(tabs)/ProfileScreen';
 import SearchScreen from './(tabs)/SearchScreen';
+import CustomTabBar from '../components/CustomTabBar';
 
 export type RootStackParamList = {
 	Onboarding: undefined;
@@ -31,25 +32,16 @@ export type TabsStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const TabsStack = createBottomTabNavigator<TabsStackParamList>();
 
-type TabIconName = React.ComponentProps<typeof Ionicons>['name'];
-
-const TAB_ICON_BY_ROUTE: Record<keyof TabsStackParamList, TabIconName> = {
-	Home: 'home-outline',
-	Search: 'search-outline',
-	Orders: 'receipt-outline',
-	Profile: 'person-outline',
-};
-
 const TabsNavigator = (): React.ReactElement => {
 	return (
 		<TabsStack.Navigator
 			initialRouteName="Home"
-			screenOptions={({ route }) => ({
+			tabBar={(props) => <CustomTabBar {...props} />}
+			screenOptions={{
 				headerShown: false,
-				tabBarIcon: ({ color, size }) => (
-					<Ionicons name={TAB_ICON_BY_ROUTE[route.name]} color={color} size={size} />
-				),
-			})}
+				tabBarShowLabel: false,
+				tabBarStyle: styles.tabBarStyle,
+			}}
 		>
 			<TabsStack.Screen name="Home" component={HomeScreen} />
 			<TabsStack.Screen name="Search" component={SearchScreen} />
@@ -62,7 +54,9 @@ const TabsNavigator = (): React.ReactElement => {
 const Navigation = (): React.ReactElement => {
 	return (
 		<NavigationContainer>
-			<RootStack.Navigator initialRouteName="Onboarding">
+			<RootStack.Navigator 
+                initialRouteName="Onboarding"
+                screenOptions={{ headerShown: false }}>
 				<RootStack.Screen name="Onboarding" component={OnboardingScreen} />
 				<RootStack.Screen name="Login" component={LoginScreen} />
 				<RootStack.Screen name="Register" component={RegisterScreen} />
@@ -78,3 +72,11 @@ const Navigation = (): React.ReactElement => {
 };
 
 export default Navigation;
+
+const styles = StyleSheet.create({
+	tabBarStyle: {
+		position: 'absolute',
+		backgroundColor: 'transparent',
+		borderTopWidth: 0,
+	},
+});
