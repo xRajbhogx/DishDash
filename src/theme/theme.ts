@@ -5,17 +5,20 @@ export const COLORS = {
         text:{
             title: '#000000',
             subtitle: '#333333',
+            theme: '#ff9924',
             input: '#555555',
         },
         tabBar: {
-            bar: '#1c1c1e',
-            inactive: '#2c2c2e',
-            activePill: '#ff9924',
+            bar: '#ffffffff',
+            inactive: '#ffffffff',
+            activePill: '#fff2e4ff',
             activeText: '#111111',
             activeIcon: '#111111',
             inactiveIcon: '#8e8e93',
             shadow: '#000000',
         },
+        themedIcon: '#ff9924',
+        border: '#E0E0E0'
 
     },
     dark: {
@@ -24,6 +27,7 @@ export const COLORS = {
         text:{
             title: '#FFFFFF',
             subtitle: '#CCCCCC',
+            theme: '#ff9924',
             input: '#AAAAAA',
         },
         tabBar: {
@@ -35,6 +39,8 @@ export const COLORS = {
             inactiveIcon: '#373737',
             shadow: '#ffffff',
         },
+        themedIcon: '#ff9924',
+        border: '#464444ff'
     }
 };
 

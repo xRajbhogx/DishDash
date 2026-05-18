@@ -6,6 +6,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
+import { IMAGES } from '../../../constants/images';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingThree'>;
 type ThemeMode = keyof typeof COLORS;
@@ -78,7 +79,7 @@ const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
 
           <View style={styles.imageContainer}>
             <Animated.Image 
-              source={require('../../../../assets/images/onboarding/thirdImage.png')}
+              source={IMAGES.onboarding.third}
               style={styles.mainImage}
               entering={FadeInDown.duration(600).delay(400)}
               resizeMode="contain"
@@ -145,8 +146,8 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   topIconBackground: {
-    backgroundColor: colors.tabBar.activePill,
-    opacity: 0.12,
+    backgroundColor: colors.buttonBg,
+    opacity: 0.82,
     borderRadius: BORDER_RADIUS.full,
   },
   titleText: {
@@ -206,7 +207,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     opacity: 1,
   },
   getStartedButton: {
-    backgroundColor: colors.tabBar.activePill,
+    backgroundColor: colors.buttonBg,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.lg,
     borderRadius: BORDER_RADIUS.full,

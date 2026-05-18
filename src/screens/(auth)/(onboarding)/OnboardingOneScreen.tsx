@@ -14,6 +14,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
+import { IMAGES } from '../../../constants/images';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingOne'>;
 type ThemeMode = keyof typeof COLORS;
@@ -85,7 +86,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Top Content */}
         <View style={styles.topContainer}>
           <Animated.Image 
-            source={require('../../../../assets/images/onboarding/shield.png')}
+            source={IMAGES.onboarding.shield}
             style={styles.topIcon}
             entering={FadeInDown.duration(600).delay(100)}
             resizeMode="contain"
@@ -103,7 +104,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Main Image and Card */}
         <View style={styles.imageContainer}>
           <Animated.Image 
-            source={require('../../../../assets/images/onboarding/firstImage.png')}
+            source={IMAGES.onboarding.first}
             style={styles.mainImage}
             entering={FadeInDown.duration(600).delay(400)}
             resizeMode="contain"
@@ -152,7 +153,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginBottom: SPACING.md,
   },
   highlightText: {
-    color: colors.tabBar.activePill,
+    color: colors.text.theme,
   },
   subtitleText: {
     fontSize: FONT_SIZE.md,
@@ -233,7 +234,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: BORDER_RADIUS.full,
-    backgroundColor: colors.tabBar.activePill,
+    backgroundColor: colors.buttonBg,
     justifyContent: 'center',
     alignItems: 'center',
     ...SHADOW.sm,

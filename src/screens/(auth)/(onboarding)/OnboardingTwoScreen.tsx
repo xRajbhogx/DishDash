@@ -82,7 +82,7 @@ const OnboardingTwoScreen = ({ navigation }: Props): React.ReactElement => {
               <MaterialCommunityIcons 
                 name="storefront-outline" 
                 size={40} 
-                color={themeColors.tabBar.activePill} 
+                color={themeColors.bg} 
               />
             </Animated.View>
             <Animated.Text style={styles.titleText} entering={FadeInDown.duration(600).delay(200)}>
@@ -175,8 +175,8 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginBottom: SPACING.xl,
   },
   topIconBackground: {
-    backgroundColor: colors.tabBar.activePill,
-    opacity: 0.12,
+    backgroundColor: colors.buttonBg,
+    opacity: 0.82,
     borderRadius: BORDER_RADIUS.full,
   },
   titleText: {
@@ -212,8 +212,8 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginRight: SPACING.md,
   },
   iconBackground: {
-    backgroundColor: colors.tabBar.activePill,
-    opacity: 0.12,
+    backgroundColor: colors.buttonBg,
+    opacity: 0.82,
     borderRadius: BORDER_RADIUS.full,
   },
   featureTextContainer: {
@@ -267,7 +267,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: colors.tabBar.activePill,
+    backgroundColor: colors.buttonBg,
     opacity: 1,
   },
   nextButton: {
