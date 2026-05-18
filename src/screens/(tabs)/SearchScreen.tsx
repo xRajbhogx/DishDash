@@ -37,13 +37,13 @@ const SearchScreen = (): React.ReactElement => {
 
         {/* Search Input */}
         <View style={[styles.searchInputContainer, SHADOW.md]}>
-          <Ionicons name="search-outline" size={20} color="#777" style={styles.searchIcon} />
+          <Ionicons name="search-outline" size={20} color={themeColors.iconDefault} style={styles.searchIcon} />
           <TextInput 
             style={styles.searchInput}
             placeholder="Search for restaurants, cuisines or dishes"
-            placeholderTextColor="#999"
+            placeholderTextColor={themeColors.text.input}
           />
-          <Ionicons name="mic-outline" size={20} color="#777" />
+          <Ionicons name="mic-outline" size={20} color={themeColors.iconDefault} />
         </View>
 
         {/* Popular Searches */}
@@ -77,13 +77,13 @@ const SearchScreen = (): React.ReactElement => {
           <View style={styles.recentList}>
             {RECENT_SEARCHES.map((item) => (
               <View key={item.id} style={styles.recentItem}>
-                <Ionicons name="time-outline" size={20} color="#666" style={styles.recentIcon} />
+                <Ionicons name="time-outline" size={20} color={themeColors.iconDefault} style={styles.recentIcon} />
                 <View style={styles.recentTextContainer}>
                   <Text style={styles.recentName}>{item.name}</Text>
                   <Text style={styles.recentSubtitle}>{item.subtitle}</Text>
                 </View>
                 <Pressable hitSlop={10}>
-                  <Ionicons name="close-outline" size={20} color="#999" />
+                  <Ionicons name="close-outline" size={20} color={themeColors.chevron} />
                 </Pressable>
               </View>
             ))}
@@ -148,16 +148,16 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFF5EB',
+    backgroundColor: colors.accentBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: colors.divider,
     borderRadius: BORDER_RADIUS.full,
     paddingHorizontal: SPACING.md,
     height: 48,
@@ -202,7 +202,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     paddingVertical: 10,
     borderRadius: BORDER_RADIUS.full,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: colors.divider,
     marginRight: SPACING.sm,
     backgroundColor: colors.tabBar.activePill,
     opacity: 0.89,
@@ -220,7 +220,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     color: colors.text.title,
   },
   clearAllText: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontSize: 13,
     fontFamily: FONT_FAMILY.medium,
   },
@@ -232,7 +232,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     alignItems: 'center',
     paddingVertical: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F2',
+    borderBottomColor: colors.divider,
   },
   recentIcon: {
     marginRight: SPACING.md,

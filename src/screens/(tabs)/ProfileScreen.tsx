@@ -182,7 +182,7 @@ const ProfileScreen = (): React.ReactElement => {
                   value={isDarkMode}
                   onValueChange={handleThemeToggle}
                   trackColor={{ false: themeColors.switchTrack, true: themeColors.themedIcon }}
-                  thumbColor="#FFFFFF"
+                  thumbColor={themeColors.iconOnDark}
                   style={styles.themeSwitch}
                 />
               }

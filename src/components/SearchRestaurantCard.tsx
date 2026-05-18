@@ -39,7 +39,7 @@ const SearchRestaurantCard = ({
         {/* Rating and Reviews */}
         <View style={styles.ratingRow}>
           <View style={styles.ratingPill}>
-            <Ionicons name="star" size={10} color="#FFFFFF" />
+            <Ionicons name="star" size={10} color={themeColors.iconOnDark} />
             <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
           </View>
           <Text style={styles.reviewCountText}>({reviewCount})</Text>
@@ -49,7 +49,7 @@ const SearchRestaurantCard = ({
         <View style={styles.priceDeliveryRow}>
           <Text style={styles.priceText}>{priceForOne}</Text>
           <Text style={styles.dotSeparator}>•</Text>
-          <Ionicons name="flash" size={14} color="#1E824C" />
+          <Ionicons name="flash" size={14} color={themeColors.success} />
           <Text style={styles.deliveryText}>{deliveryTime}</Text>
         </View>
       </View>
@@ -69,7 +69,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F2',
+    borderBottomColor: colors.divider,
     alignItems: 'center',
   },
   imageWrapper: {
@@ -109,13 +109,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   ratingPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1E824C',
+    backgroundColor: colors.ratingBg,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
   },
   ratingText: {
-    color: '#FFFFFF',
+    color: colors.ratingText,
     fontSize: 12,
     fontFamily: FONT_FAMILY.bold,
     marginLeft: 2,

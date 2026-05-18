@@ -25,7 +25,7 @@ const HomeScreen = (): React.ReactElement => {
         <View style={styles.headerContainer}>
           <View style={styles.addressContainer}>
             <View style={styles.addressTitleRow}>
-              <Ionicons name="location" size={28} color="#E23744" />
+              <Ionicons name="location" size={28} color={themeColors.danger} />
               <Text style={styles.addressTitle}>Home</Text>
               <Ionicons name="chevron-down" size={20} color={themeColors.text.title} />
             </View>
@@ -75,7 +75,7 @@ const HomeScreen = (): React.ReactElement => {
                 </Pressable>
 
                 <Pressable style={({ pressed }) => [styles.filterPill, { opacity: pressed ? 0.7 : 1 }, SHADOW.sm]}>
-                  <Ionicons name="flash" size={16} color="#1E824C" />
+                  <Ionicons name="flash" size={16} color={themeColors.success} />
                   <Text style={styles.filterPillText}>Near & Fast</Text>
                 </Pressable>
 
@@ -84,8 +84,8 @@ const HomeScreen = (): React.ReactElement => {
                   <Switch 
                     value={false}
                     onValueChange={() => {}}
-                    trackColor={{ false: '#d1d1d6', true: '#34C759' }}
-                    thumbColor={'#ffffff'}
+                    trackColor={{ false: themeColors.switchTrack, true: themeColors.statusBadge }}
+                    thumbColor={themeColors.iconOnDark}
                     style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
                   />
                 </View>
@@ -245,7 +245,7 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
   categoryIndicator: {
     width: '60%',
     height: 3,
-    backgroundColor: '#E23744',
+    backgroundColor: colors.danger,
     borderRadius: 2,
   },
   listContent: {

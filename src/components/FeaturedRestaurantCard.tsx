@@ -27,7 +27,7 @@ export const FeaturedRestaurantCard = ({
         <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
         
         <Pressable style={styles.bookmarkButton}>
-          <Ionicons name="bookmark-outline" size={24} color="#FFFFFF" />
+          <Ionicons name="bookmark-outline" size={24} color={themeColors.iconOnDark} />
         </Pressable>
 
         {isGold && (
@@ -51,7 +51,7 @@ export const FeaturedRestaurantCard = ({
           <Text style={styles.nameText}>{name}</Text>
           <View style={styles.ratingContainer}>
             <View style={styles.ratingPill}>
-              <Ionicons name="star" size={12} color="#FFFFFF" />
+              <Ionicons name="star" size={12} color={themeColors.iconOnDark} />
               <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
             </View>
             <Text style={styles.reviewCountText}>By {reviewCount}</Text>
@@ -59,12 +59,12 @@ export const FeaturedRestaurantCard = ({
         </View>
 
         <View style={styles.infoRow}>
-          <Ionicons name="flash" size={18} color="#1E824C" />
+          <Ionicons name="flash" size={18} color={themeColors.success} />
           <Text style={styles.deliveryText}>{deliveryTime}</Text>
         </View>
 
         <View style={styles.offerRow}>
-          <MaterialCommunityIcons name="brightness-percent" size={18} color="#1C64F2" />
+          <MaterialCommunityIcons name="brightness-percent" size={18} color={themeColors.goldIcon} />
           <Text style={styles.offerText}>{offerText}</Text>
         </View>
       </View>
@@ -79,7 +79,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginBottom: SPACING.xl,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: colors.divider,
   },
   imageContainer: {
     width: '100%',
@@ -101,13 +101,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    backgroundColor: '#1C64F2', 
+    backgroundColor: colors.goldBg,
     paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderTopRightRadius: BORDER_RADIUS.md,
   },
   goldBannerText: {
-    color: '#FFFFFF',
+    color: colors.goldText,
     fontSize: 12,
     fontFamily: FONT_FAMILY.bold,
     fontWeight: 'bold',
@@ -123,12 +123,12 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: colors.dotInactive,
     marginLeft: 4,
   },
   activeDot: {
     width: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.dotActive,
   },
   detailsContainer: {
     padding: SPACING.md,
@@ -153,13 +153,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   ratingPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1E824C',
+    backgroundColor: colors.ratingBg,
     paddingHorizontal: 6,
     paddingVertical: 4,
     borderRadius: BORDER_RADIUS.md,
   },
   ratingText: {
-    color: '#FFFFFF',
+    color: colors.ratingText,
     fontSize: 14,
     fontFamily: FONT_FAMILY.bold,
     fontWeight: 'bold',
@@ -177,7 +177,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginBottom: SPACING.sm,
   },
   deliveryText: {
-    color: '#1E824C',
+    color: colors.success,
     fontSize: 14,
     fontFamily: FONT_FAMILY.medium,
     fontWeight: '500',

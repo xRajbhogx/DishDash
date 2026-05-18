@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Image, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, FONT_SIZE, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme';
 import { IMAGES } from '../../constants/images';
 
@@ -75,14 +75,14 @@ const OrdersScreen = (): React.ReactElement => {
                 <View style={screenStyles.ongoingHeaderRow}>
                   <Text style={screenStyles.restaurantName}>{ONGOING_ORDER.restaurant}</Text>
                   <Pressable hitSlop={10}>
-                    <Ionicons name="ellipsis-vertical" size={18} color="#666" />
+                    <Ionicons name="ellipsis-vertical" size={18} color={themeColors.iconDefault} />
                   </Pressable>
                 </View>
                 <Text style={screenStyles.tagsText}>{ONGOING_ORDER.tags}</Text>
                 <Text style={screenStyles.orderIdText}>Order ID: {ONGOING_ORDER.id}</Text>
                 
                 <View style={screenStyles.statusRow}>
-                  <Ionicons name="time" size={16} color="#FF7A00" />
+                  <Ionicons name="time" size={16} color={themeColors.accentText} />
                   <Text style={screenStyles.statusText}>{ONGOING_ORDER.status}</Text>
                 </View>
                 <Text style={screenStyles.arrivingText}>
@@ -104,28 +104,28 @@ const OrdersScreen = (): React.ReactElement => {
               
               <View style={screenStyles.progressStep}>
                 <View style={[screenStyles.progressIconCircle, screenStyles.progressIconCircleActive]}>
-                  <Ionicons name="bag-handle" size={16} color="#FFF" />
+                  <Ionicons name="bag-handle" size={16} color={themeColors.iconOnDark} />
                 </View>
                 <Text style={[screenStyles.progressStepText, screenStyles.progressStepTextActive]}>Confirmed</Text>
               </View>
               
               <View style={screenStyles.progressStep}>
                 <View style={[screenStyles.progressIconCircle, screenStyles.progressIconCircleActive]}>
-                  <MaterialCommunityIcons name="bowl-mix" size={16} color="#FFF" />
+                  <MaterialCommunityIcons name="bowl-mix" size={16} color={themeColors.iconOnDark} />
                 </View>
                 <Text style={[screenStyles.progressStepText, screenStyles.progressStepTextActive]}>Preparing</Text>
               </View>
               
               <View style={screenStyles.progressStep}>
                 <View style={screenStyles.progressIconCircle}>
-                  <MaterialCommunityIcons name="moped" size={16} color="#999" />
+                  <MaterialCommunityIcons name="moped" size={16} color={themeColors.progressInactiveIcon} />
                 </View>
                 <Text style={screenStyles.progressStepText}>On the way</Text>
               </View>
               
               <View style={screenStyles.progressStep}>
                 <View style={screenStyles.progressIconCircle}>
-                  <Ionicons name="checkmark" size={16} color="#999" />
+                  <Ionicons name="checkmark" size={16} color={themeColors.progressInactiveIcon} />
                 </View>
                 <Text style={screenStyles.progressStepText}>Delivered</Text>
               </View>
@@ -134,12 +134,12 @@ const OrdersScreen = (): React.ReactElement => {
             {/* Footer Buttons */}
             <View style={screenStyles.ongoingFooter}>
               <Pressable style={screenStyles.footerAction}>
-                <Ionicons name="receipt-outline" size={18} color="#555" />
+                <Ionicons name="receipt-outline" size={18} color={themeColors.iconDefault} />
                 <Text style={screenStyles.footerActionText}>View Details</Text>
               </Pressable>
               <View style={screenStyles.footerDivider} />
               <Pressable style={screenStyles.footerAction}>
-                <Ionicons name="headset-outline" size={18} color="#555" />
+                <Ionicons name="headset-outline" size={18} color={themeColors.iconDefault} />
                 <Text style={screenStyles.footerActionText}>Get Help</Text>
               </Pressable>
             </View>
@@ -162,7 +162,7 @@ const OrdersScreen = (): React.ReactElement => {
                   <View style={screenStyles.completedRightInfo}>
                     <Text style={screenStyles.deliveredText}>{order.status}</Text>
                     <Pressable hitSlop={10}>
-                      <Ionicons name="ellipsis-vertical" size={16} color="#666" style={{ marginLeft: 6 }} />
+                      <Ionicons name="ellipsis-vertical" size={16} color={themeColors.iconDefault} style={{ marginLeft: 6 }} />
                     </Pressable>
                   </View>
                 </View>
@@ -170,7 +170,7 @@ const OrdersScreen = (): React.ReactElement => {
                 <Text style={screenStyles.orderIdText}>Order ID: {order.id}</Text>
                 
                 <View style={screenStyles.dateRow}>
-                  <Ionicons name="calendar-outline" size={14} color="#888" />
+                  <Ionicons name="calendar-outline" size={14} color={themeColors.iconDefault} />
                   <Text style={screenStyles.dateText}>{order.date}</Text>
                 </View>
 
@@ -188,7 +188,7 @@ const OrdersScreen = (): React.ReactElement => {
         {/* Premium Banner */}
         <View style={screenStyles.premiumBanner}>
           <View style={screenStyles.premiumIconContainer}>
-            <MaterialCommunityIcons name="crown" size={28} color="#FF7A00" />
+            <MaterialCommunityIcons name="crown" size={28} color={themeColors.accentText} />
           </View>
           <View style={screenStyles.premiumTextContainer}>
             <Text style={screenStyles.premiumTitle}>You're a Premium Member</Text>
@@ -204,7 +204,7 @@ const OrdersScreen = (): React.ReactElement => {
   );
 };
 
-const styles = StyleSheet.create({});
+
 
 const getStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
@@ -237,7 +237,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFF5EB',
+    backgroundColor: colors.accentBg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -257,7 +257,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTabButton: {
-    borderBottomColor: '#FF7A00',
+    borderBottomColor: colors.accentText,
   },
   tabText: {
     fontSize: FONT_SIZE.md,
@@ -265,10 +265,10 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     color: colors.text.subtitle,
   },
   activeTabText: {
-    color: '#FF7A00',
+    color: colors.accentText,
   },
   badgeContainer: {
-    backgroundColor: '#FF7A00',
+    backgroundColor: colors.badgeBg,
     borderRadius: 10,
     width: 20,
     height: 20,
@@ -277,7 +277,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginLeft: 6,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: colors.badgeText,
     fontSize: 10,
     fontFamily: FONT_FAMILY.bold,
   },
@@ -293,10 +293,10 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     letterSpacing: 0.5,
   },
   ongoingCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: colors.divider,
     padding: SPACING.md,
     ...SHADOW.sm,
   },
@@ -342,7 +342,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   orderIdText: {
     fontSize: 11,
     fontFamily: FONT_FAMILY.medium,
-    color: '#999',
+    color: colors.progressInactiveIcon,
     marginBottom: 6,
   },
   statusRow: {
@@ -362,7 +362,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     color: colors.text.subtitle,
   },
   highlightTime: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontFamily: FONT_FAMILY.bold,
   },
   trackOrderButtonContainer: {
@@ -371,13 +371,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginTop: -30,
   },
   trackOrderButton: {
-    backgroundColor: '#FFF5EB',
+    backgroundColor: colors.accentBg,
     paddingHorizontal: SPACING.md,
     paddingVertical: 6,
     borderRadius: BORDER_RADIUS.sm,
   },
   trackOrderText: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontSize: 12,
     fontFamily: FONT_FAMILY.bold,
   },
@@ -395,7 +395,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     left: '15%',
     right: '15%',
     height: 2,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: colors.divider,
     zIndex: 0,
   },
   progressLineActive: {
@@ -403,7 +403,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     top: 15,
     left: '15%',
     height: 2,
-    backgroundColor: '#FF7A00',
+    backgroundColor: colors.accentText,
     zIndex: 1,
   },
   progressStep: {
@@ -415,28 +415,28 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.progressBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 6,
   },
   progressIconCircleActive: {
-    backgroundColor: '#FF7A00',
+    backgroundColor: colors.badgeBg,
   },
   progressStepText: {
     fontSize: 10,
     fontFamily: FONT_FAMILY.medium,
-    color: '#999',
+    color: colors.progressInactiveIcon,
     textAlign: 'center',
   },
   progressStepTextActive: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontFamily: FONT_FAMILY.bold,
   },
   ongoingFooter: {
     flexDirection: 'row',
     borderTopWidth: 1,
-    borderTopColor: '#EFEFEF',
+    borderTopColor: colors.divider,
     paddingTop: SPACING.md,
   },
   footerAction: {
@@ -453,13 +453,13 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   },
   footerDivider: {
     width: 1,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: colors.divider,
   },
   completedCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: colors.divider,
     padding: SPACING.md,
     flexDirection: 'row',
     marginBottom: SPACING.md,
@@ -480,7 +480,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   deliveredText: {
     fontSize: 12,
     fontFamily: FONT_FAMILY.bold,
-    color: '#1E824C',
+    color: colors.success,
   },
   dateRow: {
     flexDirection: 'row',
@@ -491,7 +491,7 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
   dateText: {
     fontSize: 11,
     fontFamily: FONT_FAMILY.medium,
-    color: '#888',
+    color: colors.iconDefault,
     marginLeft: 4,
   },
   priceReorderRow: {
@@ -505,30 +505,30 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     color: colors.text.title,
   },
   reorderButton: {
-    backgroundColor: '#FFF5EB',
+    backgroundColor: colors.accentBg,
     paddingHorizontal: SPACING.md,
     paddingVertical: 6,
     borderRadius: BORDER_RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#FFE0D1',
+    borderColor: colors.accentBorder,
   },
   reorderText: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontSize: 12,
     fontFamily: FONT_FAMILY.bold,
   },
   premiumBanner: {
     marginHorizontal: SPACING.md,
-    backgroundColor: '#FFF8F5',
+    backgroundColor: colors.hygieneBoxBg,
     borderRadius: BORDER_RADIUS.lg,
     padding: SPACING.md,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#FFE0D1',
+    borderColor: colors.accentBorder,
   },
   premiumIconContainer: {
-    backgroundColor: '#FFE8D6',
+    backgroundColor: colors.accentBg,
     width: 44,
     height: 44,
     borderRadius: 22,
@@ -552,16 +552,16 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     lineHeight: 16,
   },
   premiumButton: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: '#FF7A00',
+    borderColor: colors.accentText,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: BORDER_RADIUS.sm,
     marginLeft: SPACING.sm,
   },
   premiumButtonText: {
-    color: '#FF7A00',
+    color: colors.accentText,
     fontSize: 11,
     fontFamily: FONT_FAMILY.bold,
   }

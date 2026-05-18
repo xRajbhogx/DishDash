@@ -33,7 +33,7 @@ export const RestaurantCard = ({
         </View>
         
         <View style={styles.ratingPill}>
-          <Ionicons name="star" size={FONT_SIZE.sm} color="#FFFFFF" />
+          <Ionicons name="star" size={FONT_SIZE.sm} color={themeColors.iconOnDark} />
           <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
         </View>
       </View>
@@ -43,7 +43,7 @@ export const RestaurantCard = ({
           {name}
         </Text>
         <View style={styles.deliveryRow}>
-          <Ionicons name="flash" size={FONT_SIZE.md} color="#1E824C" />
+          <Ionicons name="flash-sharp" size={FONT_SIZE.md} color={themeColors.success} />
           <Text style={styles.deliveryText} numberOfLines={1} adjustsFontSizeToFit>{deliveryTime}</Text>
         </View>
       </View>
@@ -54,7 +54,7 @@ export const RestaurantCard = ({
 const getStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.bg,
+      backgroundColor: colors.accentBg,
       borderRadius: BORDER_RADIUS.md,
       marginBottom: SPACING.xs,
       overflow: 'hidden',
@@ -80,7 +80,7 @@ const getStyles = (colors: ThemeColors) =>
       position: 'absolute',
       top: 10,
       left: 0,
-      backgroundColor: 'rgba(40, 40, 40, 0.9)',
+      backgroundColor: colors.offerBadgeBg,
       paddingHorizontal: SPACING.sm,
       paddingVertical: 4,
       borderTopRightRadius: BORDER_RADIUS.md,
@@ -88,7 +88,7 @@ const getStyles = (colors: ThemeColors) =>
       maxWidth: '90%',
     },
     offerText: {
-      color: '#FFFFFF',
+      color: colors.iconOnDark,
       fontSize: FONT_SIZE.sm,
       fontFamily: FONT_FAMILY.bold,
       fontWeight: FONT_WEIGHT.bold,
@@ -97,7 +97,7 @@ const getStyles = (colors: ThemeColors) =>
       position: 'absolute',
       bottom: -10, // Overlaps bottom edge
       left: SPACING.xs,
-      backgroundColor: '#1E824C',
+      backgroundColor: colors.ratingBg,
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 4,
@@ -108,7 +108,7 @@ const getStyles = (colors: ThemeColors) =>
       zIndex: 10,
     },
     ratingText: {
-      color: '#FFFFFF',
+      color: colors.ratingText,
       fontSize: 10,
       fontFamily: FONT_FAMILY.bold,
       fontWeight: FONT_WEIGHT.bold,
@@ -132,7 +132,7 @@ const getStyles = (colors: ThemeColors) =>
       alignItems: 'center',
     },
     deliveryText: {
-      color: '#1E824C',
+      color: colors.success,
       fontSize: 10,
       fontFamily: FONT_FAMILY.semibold,
       fontWeight: FONT_WEIGHT.semibold,
