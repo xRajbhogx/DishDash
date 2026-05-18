@@ -1,20 +1,20 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../navigation';
-import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS } from '../../theme/theme';
+import type { RootStackParamList } from '../../navigation';
+import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS } from '../../../theme/theme';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingThree'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingFour'>;
 
-const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
+const OnboardingFourScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Onboarding Three</Text>
+      <Text style={styles.title}>Onboarding Four</Text>
       <Pressable
-        onPress={() => navigation.navigate('OnboardingFour')}
+        onPress={() => navigation.replace('Tabs')}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.buttonText}>Get Started</Text>
       </Pressable>
     </View>
   );
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingThreeScreen;
+export default OnboardingFourScreen;

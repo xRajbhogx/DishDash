@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Pressable, PanResponder, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, PanResponder, useColorScheme, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
@@ -11,9 +11,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
-import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../theme/theme';
+import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../navigation';
+import type { RootStackParamList } from '../../navigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingOne'>;
 type ThemeMode = keyof typeof COLORS;
@@ -24,7 +24,9 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
   const themeColors = COLORS[theme];
   const styles = React.useMemo(() => getStyles(themeColors), [themeColors]);
 
+  const { height } = useWindowDimensions();
   const bounceValue = useSharedValue(0);
+  const translateY = useSharedValue(0);
 
   useEffect(() => {
     bounceValue.value = withRepeat(
@@ -37,11 +39,31 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
     );
   }, [bounceValue]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      translateY.value = 0;
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const animatedIconStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: bounceValue.value }],
     };
   });
+
+  const animatedScreenStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
+
+  const handleNext = () => {
+    translateY.value = withTiming(-height, { duration: 600 });
+    setTimeout(() => {
+      navigation.navigate('OnboardingTwo');
+    }, 300);
+  };
 
   const panResponder = React.useRef(
     PanResponder.create({
@@ -51,7 +73,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dy < -50) {
-          navigation.navigate('OnboardingTwo');
+          handleNext();
         }
       },
     })
@@ -59,11 +81,11 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']} {...panResponder.panHandlers}>
-      <View style={styles.content}>
+      <Animated.View style={[styles.content, animatedScreenStyle]}>
         {/* Top Content */}
         <View style={styles.topContainer}>
           <Animated.Image 
-            source={require('../../../assets/images/onboarding/shield.png')}
+            source={require('../../../../assets/images/onboarding/shield.png')}
             style={styles.topIcon}
             entering={FadeInDown.duration(600).delay(100)}
             resizeMode="contain"
@@ -81,7 +103,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Main Image and Card */}
         <View style={styles.imageContainer}>
           <Animated.Image 
-            source={require('../../../assets/images/onboarding/firstImage.png')}
+            source={require('../../../../assets/images/onboarding/firstImage.png')}
             style={styles.mainImage}
             entering={FadeInDown.duration(600).delay(400)}
             resizeMode="contain"
@@ -93,13 +115,13 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
           <View style={styles.pillIndicator} />
           <Text style={styles.swipeText}>Swipe up to get started</Text>
           
-          <Pressable onPress={() => navigation.navigate('OnboardingTwo')} style={styles.nextButtonContainer}>
+          <Pressable onPress={handleNext} style={styles.nextButtonContainer}>
             <Animated.View style={[styles.nextButton, animatedIconStyle]}>
               <Entypo name="chevron-up" size={FONT_SIZE.xxxl} color={themeColors.tabBar.activeText} />
             </Animated.View>
           </Pressable>
         </Animated.View>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 };

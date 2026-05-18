@@ -1,7 +1,7 @@
 export const COLORS = {
     light:{
         bg: '#ffffffff',
-        secondBg: '#fffaf5ff',
+        buttonBg: '#ff9924',
         text:{
             title: '#000000',
             subtitle: '#333333',
@@ -20,7 +20,7 @@ export const COLORS = {
     },
     dark: {
         bg: '#000000',
-        secondBg: '#232323ff',
+        buttonBg: '#ff9924',
         text:{
             title: '#FFFFFF',
             subtitle: '#CCCCCC',
