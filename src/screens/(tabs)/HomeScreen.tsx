@@ -263,7 +263,7 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
     marginTop: SPACING.lg,
     paddingTop: SPACING.xl,
     borderTopWidth: 1,
-    borderTopColor: '#EEEEEE',
+    borderTopColor: colors.border,
   },
   featuredTitle: {
     color: colors.text.subtitle,

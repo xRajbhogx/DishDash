@@ -18,11 +18,21 @@ export const COLORS = {
             shadow: '#000000',
         },
         themedIcon: '#ff9924',
-        border: '#E0E0E0'
-
+        border: '#E0E0E0',
+        card: '#FFFFFF',
+        avatar: '#FFF2E4',
+        avatarText: '#FF7A00',
+        sectionBg: '#F8F8F8',
+        iconDefault: '#555555',
+        danger: '#E23744',
+        dangerBg: '#FFF5F5',
+        success: '#1E824C',
+        chevron: '#CCCCCC',
+        switchTrack: '#D1D1D6',
+        statusBadge: '#34C759',
     },
     dark: {
-        bg: '#000000',
+        bg: '#111111ff',
         buttonBg: '#ff9924',
         text:{
             title: '#FFFFFF',
@@ -31,16 +41,27 @@ export const COLORS = {
             input: '#AAAAAA',
         },
         tabBar: {
-            bar: '#8e8e8e',
-            inactive: '#bababa',
+            bar: '#000000ff',
+            inactive: '#2c2c2cff',
             activePill: '#ff9924',
             activeText: '#111111',
             activeIcon: '#111111',
-            inactiveIcon: '#373737',
+            inactiveIcon: '#fff6eaff',
             shadow: '#ffffff',
         },
         themedIcon: '#ff9924',
-        border: '#464444ff'
+        border: '#464444ff',
+        card: '#1A1A1A',
+        avatar: '#3D2A10',
+        avatarText: '#FF9924',
+        sectionBg: '#111111',
+        iconDefault: '#AAAAAA',
+        danger: '#FF6B6B',
+        dangerBg: '#2A1515',
+        success: '#34C759',
+        chevron: '#555555',
+        switchTrack: '#555555',
+        statusBadge: '#34C759',
     }
 };
 
