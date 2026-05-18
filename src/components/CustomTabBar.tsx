@@ -1,25 +1,35 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet, View, useColorScheme, useWindowDimensions } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BORDER_RADIUS, COLORS, FONT_WEIGHT, ICON_SIZE, SHADOW, SPACING } from '../theme/theme';
 
 type TabIconName = React.ComponentProps<typeof Ionicons>['name'];
 
 type TabRouteName = 'Home' | 'Search' | 'Orders' | 'Profile';
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+type ThemeMode = keyof typeof COLORS;
 
-const COLORS = {
-	bar: '#1c1c1e',
-	inactive: '#2c2c2e',
-	activePill: '#ffffff',
-	activeText: '#111111',
-	activeIcon: '#111111',
-	inactiveIcon: '#8e8e93',
-	shadow: '#000000',
+type ThemeColors = (typeof COLORS)[ThemeMode];
+
+type SizeConfig = {
+	edge: number;
+	barPaddingHorizontal: number;
+	barPaddingVertical: number;
+	tabSize: number;
+	activeMinWidth: number;
+	activePaddingHorizontal: number;
+	labelFontSize: number;
+	labelSpacing: number;
+	iconSize: number;
+	tabSpacing: number;
+	hitSlopHorizontal: number;
+	hitSlopVertical: number;
 };
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const getIconName = (routeName: string): TabIconName => {
 	switch (routeName) {
@@ -45,7 +55,7 @@ const getLabel = (routeName: string, label: string | undefined): string => {
 };
 
 const getBottomPadding = (bottomInset: number): number => {
-	return Math.max(bottomInset, 12);
+	return Math.max(bottomInset, SPACING.sm + SPACING.xs);
 };
 
 const getScale = (width: number): number => {
@@ -55,22 +65,22 @@ const getScale = (width: number): number => {
 	return Math.min(Math.max(scale, 0.85), 1.15);
 };
 
-const getSizeConfig = (width: number) => {
+const getSizeConfig = (width: number): SizeConfig => {
 	const scale = getScale(width);
 
 	return {
-		edge: Math.round(24 * scale),
+		edge: Math.round(SPACING.lg * scale),
 		barPaddingHorizontal: Math.round(0 * scale),
 		barPaddingVertical: Math.round(5 * scale),
 		tabSize: Math.round(50 * scale),
 		activeMinWidth: Math.round(96 * scale),
-		activePaddingHorizontal: Math.round(16 * scale),
+		activePaddingHorizontal: Math.round(SPACING.md * scale),
 		labelFontSize: Math.round(14 * scale),
-		labelSpacing: Math.round(8 * scale),
-		iconSize: Math.round(20 * scale),
+		labelSpacing: Math.round(SPACING.sm * scale),
+		iconSize: Math.round(ICON_SIZE.md * scale),
 		tabSpacing: Math.round(6 * scale),
 		hitSlopHorizontal: Math.round(10 * scale),
-		hitSlopVertical: Math.round(8 * scale),
+		hitSlopVertical: Math.round(SPACING.sm * scale),
 	};
 };
 
@@ -78,6 +88,9 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 	const { state, descriptors, navigation } = props;
 	const insets = useSafeAreaInsets();
 	const { width } = useWindowDimensions();
+	const theme = (useColorScheme() ?? 'light') as ThemeMode;
+	const themeColors = COLORS[theme];
+	const styles = getStyles(themeColors);
 	const tabLayout = React.useMemo(() => LinearTransition.duration(200), []);
 
 	const { dynamicStyles, iconSize, hitSlop } = React.useMemo(() => {
@@ -97,7 +110,7 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 				root: {
 					left: sizes.edge,
 					right: sizes.edge,
-					paddingBottom: getBottomPadding(insets.bottom + 8),
+					paddingBottom: getBottomPadding(insets.bottom + SPACING.sm),
 				},
 				bar: {
 					paddingHorizontal: sizes.barPaddingHorizontal,
@@ -178,7 +191,7 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 						>
 							{isFocused ? (
 								<View style={styles.activeContent}>
-									<Ionicons name={iconName} size={iconSize} color={COLORS.activeIcon} />
+									<Ionicons name={iconName} size={iconSize} color={themeColors.tabBar.activeIcon} />
 									<Animated.Text
 										entering={FadeIn.duration(160)}
 										exiting={FadeOut.duration(120)}
@@ -188,7 +201,7 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 									</Animated.Text>
 								</View>
 							) : (
-								<Ionicons name={iconName} size={iconSize} color={COLORS.inactiveIcon} />
+								<Ionicons name={iconName} size={iconSize} color={themeColors.tabBar.inactiveIcon} />
 							)}
 						</AnimatedPressable>
 					);
@@ -198,7 +211,9 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 	);
 };
 
-const styles = StyleSheet.create({
+export default CustomTabBar;
+
+const getStyles = (colors: ThemeColors) => StyleSheet.create({
 	root: {
 		position: 'absolute',
 		bottom: 0,
@@ -206,16 +221,16 @@ const styles = StyleSheet.create({
 	},
 	bar: {
 		width: '100%',
-		backgroundColor: COLORS.bar,
-		borderRadius: 999,
+		backgroundColor: colors.tabBar.bar,
+		borderRadius: BORDER_RADIUS.full,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		shadowColor: COLORS.shadow,
-		shadowOpacity: 0.2,
-		shadowRadius: 12,
-		shadowOffset: { width: 0, height: 6 },
-		elevation: 8,
+		shadowColor: colors.tabBar.shadow,
+		shadowOpacity: SHADOW.lg.shadowOpacity,
+		shadowRadius: SHADOW.lg.shadowRadius,
+		shadowOffset: SHADOW.lg.shadowOffset,
+		elevation: SHADOW.lg.elevation,
 	},
 	tabItem: {
 		alignItems: 'center',
@@ -224,11 +239,11 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	tabItemActive: {
-		backgroundColor: COLORS.activePill,
-		borderRadius: 999,
+		backgroundColor: colors.tabBar.activePill,
+		borderRadius: BORDER_RADIUS.full,
 	},
 	tabItemInactive: {
-		backgroundColor: COLORS.inactive,
+		backgroundColor: colors.tabBar.inactive,
 	},
 	activeContent: {
 		flexDirection: 'row',
@@ -236,9 +251,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	activeLabel: {
-		color: COLORS.activeText,
-		fontWeight: '600',
+		color: colors.tabBar.activeText,
+		fontWeight: FONT_WEIGHT.semibold,
 	},
 });
 
-export default CustomTabBar;
