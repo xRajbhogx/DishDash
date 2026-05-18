@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY, SHADOW } from '../theme/theme';
 import { RestaurantCardProps } from '../constants/RestaurantCard';
+import HygieneBadge from './HygieneBadge';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
@@ -27,9 +28,7 @@ const SearchRestaurantCard = ({
       <View style={styles.imageWrapper}>
         <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
         {/* Hygiene Badge Overlapping */}
-        <View style={[styles.hygieneBadgeOverlapping, SHADOW.sm]}>
-          <MaterialCommunityIcons name="shield-check-outline" size={16} color="#FF7A00" />
-        </View>
+        <HygieneBadge variant="overlay-icon" style={{ position: 'absolute', bottom: -6, left: -6 }} />
       </View>
 
       {/* Middle side Details */}
@@ -57,11 +56,7 @@ const SearchRestaurantCard = ({
 
       {/* Right side Hygiene Box */}
       <View style={styles.rightBadgeContainer}>
-        <View style={styles.hygieneBox}>
-          <MaterialCommunityIcons name="shield-check-outline" size={20} color="#FF7A00" />
-          <Text style={styles.hygieneBoxText}>Hygiene</Text>
-          <Text style={styles.hygieneBoxText}>Certified</Text>
-        </View>
+        <HygieneBadge variant="box" />
       </View>
     </Pressable>
   );
@@ -89,16 +84,6 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     height: '100%',
     borderRadius: BORDER_RADIUS.md,
     resizeMode: 'cover',
-  },
-  hygieneBadgeOverlapping: {
-    position: 'absolute',
-    bottom: -6,
-    left: -6,
-    backgroundColor: '#FFFFFF',
-    padding: 4,
-    borderRadius: BORDER_RADIUS.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   detailsContainer: {
     flex: 1,
@@ -165,24 +150,6 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     marginLeft: SPACING.sm,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  hygieneBox: {
-    backgroundColor: '#FFF8F5',
-    borderWidth: 1,
-    borderColor: '#FFE0D1',
-    borderRadius: BORDER_RADIUS.md,
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 65,
-  },
-  hygieneBoxText: {
-    fontSize: 10,
-    fontFamily: FONT_FAMILY.medium,
-    color: '#333333',
-    textAlign: 'center',
-    marginTop: 2,
   }
 });
 
