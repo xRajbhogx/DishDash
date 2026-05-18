@@ -86,6 +86,8 @@ You should think like a senior mobile developer,
 - One component per file. Split if it gets too complicated.
 - Comments explain _why_ or _what_ depending on the situation. No dead code.
 - The app should be consistent overall.
+- No hardcoded values for font, sizes, border, etc in the screen, must be used from theme/theme.ts... if using specify where and why its better
+
 
 ## Stack
 

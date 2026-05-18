@@ -1,6 +1,7 @@
 export const COLORS = {
     light:{
-        bg: '#FFFFFF',
+        bg: '#ffffffff',
+        secondBg: '#fffaf5ff',
         text:{
             title: '#000000',
             subtitle: '#333333',
@@ -19,9 +20,10 @@ export const COLORS = {
     },
     dark: {
         bg: '#000000',
+        secondBg: '#232323ff',
         text:{
-            primary: '#FFFFFF',
-            secondary: '#CCCCCC',
+            title: '#FFFFFF',
+            subtitle: '#CCCCCC',
             input: '#AAAAAA',
         },
         tabBar: {

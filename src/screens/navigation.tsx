@@ -7,6 +7,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import LoginScreen from './(auth)/LoginScreen';
 import OnboardingScreen from './(auth)/OnboardingScreen';
+import OnboardingOneScreen from './(auth)/OnboardingOneScreen';
+import OnboardingTwoScreen from './(auth)/OnboardingTwoScreen';
+import OnboardingThreeScreen from './(auth)/OnboardingThreeScreen';
+import OnboardingFourScreen from './(auth)/OnboardingFourScreen';
 import OtpScreen from './(auth)/OtpScreen';
 import RegisterScreen from './(auth)/RegisterScreen';
 import OrdersScreen from './(tabs)/OrdersScreen';
@@ -16,6 +20,10 @@ import CustomTabBar from '../components/CustomTabBar';
 
 export type RootStackParamList = {
 	Onboarding: undefined;
+	OnboardingOne: undefined;
+	OnboardingTwo: undefined;
+	OnboardingThree: undefined;
+	OnboardingFour: undefined;
 	Login: undefined;
 	Register: undefined;
 	Otp: undefined;
@@ -55,9 +63,13 @@ const Navigation = (): React.ReactElement => {
 	return (
 		<NavigationContainer>
 			<RootStack.Navigator 
-                initialRouteName="Onboarding"
+                initialRouteName="OnboardingOne"
                 screenOptions={{ headerShown: false }}>
 				<RootStack.Screen name="Onboarding" component={OnboardingScreen} />
+				<RootStack.Screen name="OnboardingOne" component={OnboardingOneScreen} />
+				<RootStack.Screen name="OnboardingTwo" component={OnboardingTwoScreen} />
+				<RootStack.Screen name="OnboardingThree" component={OnboardingThreeScreen} />
+				<RootStack.Screen name="OnboardingFour" component={OnboardingFourScreen} />
 				<RootStack.Screen name="Login" component={LoginScreen} />
 				<RootStack.Screen name="Register" component={RegisterScreen} />
 				<RootStack.Screen name="Otp" component={OtpScreen} />
