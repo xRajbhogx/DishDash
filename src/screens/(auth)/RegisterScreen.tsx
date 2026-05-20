@@ -2,15 +2,16 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation';
+import { REGISTER_CONTENT } from '../../data/AuthData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 const RegisterScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.title}>{REGISTER_CONTENT.title}</Text>
       <Pressable onPress={() => navigation.navigate('Otp')} style={styles.button}>
-        <Text style={styles.buttonText}>Continue to OTP</Text>
+        <Text style={styles.buttonText}>{REGISTER_CONTENT.primaryActionLabel}</Text>
       </Pressable>
     </View>
   );

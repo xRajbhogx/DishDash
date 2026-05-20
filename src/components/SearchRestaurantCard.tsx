@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY, SHADOW } from '../theme/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY } from '../theme/theme';
 import { RestaurantCardProps } from '../data/RestaurantCard';
 import HygieneBadge from './HygieneBadge';
 
@@ -21,14 +22,28 @@ const SearchRestaurantCard = ({
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+
+  const handlePress = (): void => {
+    navigation.navigate('Home', {
+      screen: 'RestaurantDetails',
+      params: {
+        name,
+        priceForOne,
+        rating,
+        reviewCount,
+        deliveryTime,
+      },
+    });
+  };
 
   return (
-    <Pressable style={({ pressed }) => [styles.container, style, { opacity: pressed ? 0.9 : 1 }]}>
+    <Pressable style={({ pressed }) => [styles.container, style, pressed && styles.containerPressed]} onPress={handlePress}>
       {/* Left side Image container */}
       <View style={styles.imageWrapper}>
         <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
         {/* Hygiene Badge Overlapping */}
-        <HygieneBadge variant="overlay-icon" style={{ position: 'absolute', bottom: -6, left: -6 }} />
+        <HygieneBadge variant="overlay-icon" style={styles.hygieneBadge} />
       </View>
 
       {/* Middle side Details */}
@@ -72,12 +87,20 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     borderBottomColor: colors.divider,
     alignItems: 'center',
   },
+  containerPressed: {
+    opacity: 0.9,
+  },
   imageWrapper: {
     width: 80,
     height: 80,
     borderRadius: BORDER_RADIUS.md,
     marginRight: SPACING.lg,
     position: 'relative',
+  },
+  hygieneBadge: {
+    position: 'absolute',
+    bottom: -6,
+    left: -6,
   },
   image: {
     width: '100%',

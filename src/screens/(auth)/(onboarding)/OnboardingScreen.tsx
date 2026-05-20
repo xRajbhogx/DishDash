@@ -2,19 +2,20 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
+import { ONBOARDING_SPLASH } from '../../../data/OnboardingData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
 const OnboardingScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Dish Dash</Text>
-      <Text style={styles.subtitle}>Fast, fresh, and delivered.</Text>
+      <Text style={styles.title}>{ONBOARDING_SPLASH.title}</Text>
+      <Text style={styles.subtitle}>{ONBOARDING_SPLASH.subtitle}</Text>
       <Pressable
         onPress={() => navigation.navigate('Login')}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Get Started</Text>
+        <Text style={styles.buttonText}>{ONBOARDING_SPLASH.ctaLabel}</Text>
       </Pressable>
     </View>
   );

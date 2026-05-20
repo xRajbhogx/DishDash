@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, useColorScheme, useWindowDimensions } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { NavigationState } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -84,7 +85,27 @@ const getSizeConfig = (width: number): SizeConfig => {
 	};
 };
 
-const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
+const getNestedRouteName = (state: NavigationState | Partial<NavigationState> | undefined): string | undefined => {
+	if (!state || state.index === undefined || !state.routes) {
+		return undefined;
+	}
+
+	const activeRoute = state.routes[state.index];
+	if (!activeRoute) {
+		return undefined;
+	}
+
+	const nestedState = activeRoute.state as NavigationState | Partial<NavigationState> | undefined;
+	if (nestedState && nestedState.index !== undefined && nestedState.routes) {
+		return getNestedRouteName(nestedState) ?? activeRoute.name;
+	}
+
+	return activeRoute.name;
+};
+
+const HIDDEN_ROUTE_NAMES = ['RestaurantDetails', 'Cart'];
+
+const CustomTabBar = (props: BottomTabBarProps): React.ReactElement | null => {
 	const { state, descriptors, navigation } = props;
 	const insets = useSafeAreaInsets();
 	const { width } = useWindowDimensions();
@@ -136,6 +157,11 @@ const CustomTabBar = (props: BottomTabBarProps): React.ReactElement => {
 			}),
 		};
 	}, [insets.bottom, width]);
+
+	const activeRouteName = getNestedRouteName(state);
+	if (activeRouteName && HIDDEN_ROUTE_NAMES.includes(activeRouteName)) {
+		return null;
+	}
 
 	return (
 		<View style={[styles.root, dynamicStyles.root]} pointerEvents="box-none">

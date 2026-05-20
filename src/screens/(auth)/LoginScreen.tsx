@@ -2,24 +2,25 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation';
+import { LOGIN_CONTENT } from '../../data/AuthData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>{LOGIN_CONTENT.title}</Text>
       <Pressable
         onPress={() => navigation.navigate('Register')}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Create Account</Text>
+        <Text style={styles.buttonText}>{LOGIN_CONTENT.primaryActionLabel}</Text>
       </Pressable>
       <Pressable
         onPress={() => navigation.replace('Tabs')}
         style={styles.secondaryButton}
       >
-        <Text style={styles.secondaryButtonText}>Continue to Home</Text>
+        <Text style={styles.secondaryButtonText}>{LOGIN_CONTENT.secondaryActionLabel}</Text>
       </Pressable>
     </View>
   );

@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileMenuItem from '../../components/ProfileMenuItem';
 import ProfileStatCard from '../../components/ProfileStatCard';
+import { PROFILE_ACTIONS, PROFILE_HEADER, PROFILE_SECTIONS, PROFILE_STATS, PROFILE_USER } from '../../data/ProfileData';
 import {
   COLORS,
   SPACING,
@@ -50,8 +51,8 @@ const ProfileScreen = (): React.ReactElement => {
         {/* Header */}
         <View style={styles.headerContainer}>
           <View>
-            <Text style={styles.headerTitle}>Profile</Text>
-            <Text style={styles.headerSubtitle}>Manage your account and preferences</Text>
+            <Text style={styles.headerTitle}>{PROFILE_HEADER.title}</Text>
+            <Text style={styles.headerSubtitle}>{PROFILE_HEADER.subtitle}</Text>
           </View>
           <View style={styles.headerActions}>
             <Pressable style={styles.headerIconButton} hitSlop={8}>
@@ -66,145 +67,70 @@ const ProfileScreen = (): React.ReactElement => {
         {/* User Card */}
         <Pressable style={[styles.userCard, SHADOW.sm]}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>AR</Text>
+            <Text style={styles.avatarText}>{PROFILE_USER.initials}</Text>
             <View style={styles.onlineBadge} />
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Arjun Rathore</Text>
-            <Text style={styles.userPhone}>+91 98765 43210</Text>
-            <Text style={styles.userEmail}>arjun@dishdash.com</Text>
+            <Text style={styles.userName}>{PROFILE_USER.name}</Text>
+            <Text style={styles.userPhone}>{PROFILE_USER.phone}</Text>
+            <Text style={styles.userEmail}>{PROFILE_USER.email}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={themeColors.chevron} />
         </Pressable>
 
         {/* Stats Row */}
         <View style={[styles.statsRow, SHADOW.sm]}>
-          <ProfileStatCard
-            icon="bag-handle-outline"
-            value="42"
-            label="Orders"
-            themeColors={themeColors}
-          />
-          <View style={styles.statsDivider} />
-          <ProfileStatCard
-            icon="star-outline"
-            value="4.6"
-            label="Rating"
-            themeColors={themeColors}
-          />
-          <View style={styles.statsDivider} />
-          <ProfileStatCard
-            icon="heart-outline"
-            value="12"
-            label="Saved"
-            themeColors={themeColors}
-          />
-          <View style={styles.statsDivider} />
-          <ProfileStatCard
-            icon="pricetag-outline"
-            value="8"
-            label="Offers"
-            themeColors={themeColors}
-          />
+          {PROFILE_STATS.map((stat, index) => (
+            <React.Fragment key={stat.id}>
+              <ProfileStatCard
+                icon={stat.icon}
+                value={stat.value}
+                label={stat.label}
+                themeColors={themeColors}
+              />
+              {index < PROFILE_STATS.length - 1 && <View style={styles.statsDivider} />}
+            </React.Fragment>
+          ))}
         </View>
 
-        {/* Orders Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionLabel}>Orders</Text>
-          <View style={styles.sectionCard}>
-            <ProfileMenuItem
-              icon="bag-handle-outline"
-              label="My Orders"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="bookmark-outline"
-              label="Reorder"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="heart-outline"
-              label="Saved Restaurants"
-              themeColors={themeColors}
-            />
-          </View>
-        </View>
+        {PROFILE_SECTIONS.map((section) => (
+          <View key={section.id} style={styles.sectionContainer}>
+            {section.title && <Text style={styles.sectionLabel}>{section.title}</Text>}
+            <View style={styles.sectionCard}>
+              {section.items.map((item, index) => {
+                const isToggle = item.type === 'toggle';
 
-        {/* Account Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionLabel}>Account</Text>
-          <View style={styles.sectionCard}>
-            <ProfileMenuItem
-              icon="person-outline"
-              label="Personal Information"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="location-outline"
-              label="Addresses"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="card-outline"
-              label="Payment Methods"
-              themeColors={themeColors}
-            />
+                return (
+                  <React.Fragment key={item.id}>
+                    <ProfileMenuItem
+                      icon={item.icon}
+                      label={item.label}
+                      themeColors={themeColors}
+                      hideChevron={isToggle}
+                      rightElement={
+                        isToggle ? (
+                          <Switch
+                            value={isDarkMode}
+                            onValueChange={handleThemeToggle}
+                            trackColor={{ false: themeColors.switchTrack, true: themeColors.themedIcon }}
+                            thumbColor={themeColors.iconOnDark}
+                            style={styles.themeSwitch}
+                          />
+                        ) : undefined
+                      }
+                    />
+                    {index < section.items.length - 1 && <View style={styles.menuDivider} />}
+                  </React.Fragment>
+                );
+              })}
+            </View>
           </View>
-        </View>
-
-        {/* Preferences Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionLabel}>Preferences</Text>
-          <View style={styles.sectionCard}>
-            <ProfileMenuItem
-              icon="notifications-outline"
-              label="Notifications"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="shield-checkmark-outline"
-              label="Privacy & Security"
-              themeColors={themeColors}
-            />
-            <View style={styles.menuDivider} />
-            <ProfileMenuItem
-              icon="moon-outline"
-              label="Dark Mode"
-              themeColors={themeColors}
-              hideChevron
-              rightElement={
-                <Switch
-                  value={isDarkMode}
-                  onValueChange={handleThemeToggle}
-                  trackColor={{ false: themeColors.switchTrack, true: themeColors.themedIcon }}
-                  thumbColor={themeColors.iconOnDark}
-                  style={styles.themeSwitch}
-                />
-              }
-            />
-          </View>
-        </View>
-
-        {/* Help & Support */}
-        <View style={styles.sectionContainer}>
-          <View style={styles.sectionCard}>
-            <ProfileMenuItem
-              icon="headset-outline"
-              label="Help & Support"
-              themeColors={themeColors}
-            />
-          </View>
-        </View>
+        ))}
 
         {/* Log Out */}
         <Pressable style={({ pressed }) => [styles.logoutButton, { opacity: pressed ? 0.7 : 1 }]}>
           <Ionicons name="log-out-outline" size={20} color={themeColors.danger} style={styles.logoutIcon} />
-          <Text style={styles.logoutText}>Log Out</Text>
+          <Text style={styles.logoutText}>{PROFILE_ACTIONS.logoutLabel}</Text>
         </Pressable>
 
       </ScrollView>

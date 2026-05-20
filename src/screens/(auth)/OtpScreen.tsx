@@ -2,15 +2,16 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation';
+import { OTP_CONTENT } from '../../data/AuthData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Otp'>;
 
 const OtpScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>OTP Verification</Text>
+      <Text style={styles.title}>{OTP_CONTENT.title}</Text>
       <Pressable onPress={() => navigation.replace('Tabs')} style={styles.button}>
-        <Text style={styles.buttonText}>Verify and Continue</Text>
+        <Text style={styles.buttonText}>{OTP_CONTENT.primaryActionLabel}</Text>
       </Pressable>
     </View>
   );

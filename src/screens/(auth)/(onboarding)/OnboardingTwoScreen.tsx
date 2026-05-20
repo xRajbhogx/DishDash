@@ -7,33 +7,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
+import { ONBOARDING_FEATURES, ONBOARDING_TWO } from '../../../data/OnboardingData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingTwo'>;
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
-
-type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
-
-const FEATURES: { id: string; icon: IconName; title: string; subtitle: string }[] = [
-  {
-    id: '1',
-    icon: 'shield-check-outline',
-    title: 'Hygiene Certified',
-    subtitle: 'Verified clean kitchens and safe practices',
-  },
-  {
-    id: '2',
-    icon: 'clipboard-check-outline',
-    title: 'Regular Inspections',
-    subtitle: 'Routine quality and hygiene checks',
-  },
-  {
-    id: '3',
-    icon: 'medal-outline',
-    title: 'Only the Best',
-    subtitle: 'Carefully selected restaurants, always',
-  },
-];
 
 const OnboardingTwoScreen = ({ navigation }: Props): React.ReactElement => {
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
@@ -79,38 +57,30 @@ const OnboardingTwoScreen = ({ navigation }: Props): React.ReactElement => {
           <View style={styles.topSection}>
             <Animated.View style={styles.topIconWrapper} entering={FadeInDown.duration(600).delay(100)}>
               <View style={[StyleSheet.absoluteFill, styles.topIconBackground]} />
-              <MaterialCommunityIcons 
-                name="storefront-outline" 
-                size={40} 
-                color={themeColors.bg} 
-              />
+              <MaterialCommunityIcons name="storefront-outline" size={40} color={themeColors.bg} />
             </Animated.View>
             <Animated.Text style={styles.titleText} entering={FadeInDown.duration(600).delay(200)}>
-              Certified for{'\n'}your confidence
+              {ONBOARDING_TWO.title}
             </Animated.Text>
             <Animated.Text style={styles.subtitleText} entering={FadeInDown.duration(600).delay(300)}>
-              We partner only with restaurants that meet our strict hygiene and quality standards.
+              {ONBOARDING_TWO.subtitle}
             </Animated.Text>
           </View>
 
           <Animated.View style={styles.cardContainer} entering={FadeInDown.duration(600).delay(400)}>
-            {FEATURES.map((item, index) => (
+            {ONBOARDING_FEATURES.map((item, index) => (
               <View key={item.id}>
                 <View style={styles.featureRow}>
                   <View style={styles.iconWrapper}>
                     <View style={[StyleSheet.absoluteFill, styles.iconBackground]} />
-                    <MaterialCommunityIcons 
-                      name={item.icon} 
-                      size={24} 
-                      color={themeColors.tabBar.activePill} 
-                    />
+                    <MaterialCommunityIcons name={item.icon} size={24} color={themeColors.tabBar.activePill} />
                   </View>
                   <View style={styles.featureTextContainer}>
                     <Text style={styles.featureTitle}>{item.title}</Text>
                     <Text style={styles.featureSubtitle}>{item.subtitle}</Text>
                   </View>
                 </View>
-                {index < FEATURES.length - 1 && <View style={styles.divider} />}
+                {index < ONBOARDING_FEATURES.length - 1 && <View style={styles.divider} />}
               </View>
             ))}
           </Animated.View>

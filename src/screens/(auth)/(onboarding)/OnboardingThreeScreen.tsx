@@ -6,7 +6,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
-import { IMAGES } from '../../../constants/images';
+import { ONBOARDING_THREE } from '../../../data/OnboardingData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingThree'>;
 type ThemeMode = keyof typeof COLORS;
@@ -70,16 +70,16 @@ const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
               />
             </Animated.View>
             <Animated.Text style={styles.titleText} entering={FadeInDown.duration(600).delay(200)}>
-              Delivered with care,{'\n'}every time
+                {ONBOARDING_THREE.title}
             </Animated.Text>
             <Animated.Text style={styles.subtitleText} entering={FadeInDown.duration(600).delay(300)}>
-              Careful packaging, on-time delivery,{'\n'}and real-time tracking to your{'\n'}doorstep.
+                 {ONBOARDING_THREE.subtitle}
             </Animated.Text>
           </View>
 
           <View style={styles.imageContainer}>
             <Animated.Image 
-              source={IMAGES.onboarding.third}
+              source={ONBOARDING_THREE.image}
               style={styles.mainImage}
               entering={FadeInDown.duration(600).delay(400)}
               resizeMode="contain"
@@ -93,7 +93,7 @@ const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
             hitSlop={8}
             style={styles.skipButton}
           >
-            <Text style={styles.skipText}>Skip</Text>
+            <Text style={styles.skipText}>{ONBOARDING_THREE.skipLabel}</Text>
           </Pressable>
 
           <View style={styles.pagination}>
@@ -112,7 +112,7 @@ const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
             onPress={() => navigation.navigate('Tabs')} 
             style={styles.getStartedButton}
           >
-            <Text style={styles.getStartedText}>Get Started</Text>
+            <Text style={styles.getStartedText}>{ONBOARDING_THREE.ctaLabel}</Text>
           </Pressable>
         </Animated.View>
 

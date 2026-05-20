@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View, Image, useColorScheme, Pressable, ImageSourcePropType } from 'react-native';
+import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, SHADOW } from '../theme/theme';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY, SHADOW } from '../theme/theme';
 import { RestaurantCardProps } from '../data/RestaurantCard';
 
 type ThemeMode = keyof typeof COLORS;
@@ -14,15 +15,27 @@ export const FeaturedRestaurantCard = ({
   rating,
   reviewCount,
   deliveryTime,
+  priceForOne,
   offerText,
   isGold,
 }: RestaurantCardProps): React.ReactElement => {
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+
+  const handlePress = (): void => {
+    navigation.navigate('RestaurantDetails', {
+      name,
+      priceForOne: priceForOne ?? '₹150 for one',
+      rating,
+      reviewCount,
+      deliveryTime,
+    });
+  };
 
   return (
-    <Pressable style={({ pressed }) => [styles.container, SHADOW.sm, { opacity: pressed ? 0.95 : 1 }]}>
+    <Pressable style={({ pressed }) => [styles.container, pressed && styles.containerPressed]} onPress={handlePress}>
       <View style={styles.imageContainer}>
         <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
         
@@ -79,6 +92,10 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: colors.divider,
+    ...SHADOW.sm,
+  },
+  containerPressed: {
+    opacity: 0.95,
   },
   imageContainer: {
     width: '100%',

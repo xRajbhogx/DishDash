@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, ScrollView, Pressable, Image, useColorScheme } 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, FONT_SIZE, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme';
-import { IMAGES } from '../../constants/images';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];

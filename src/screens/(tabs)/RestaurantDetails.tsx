@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import {
 	Image,
-	ImageSourcePropType,
 	Pressable,
 	ScrollView,
 	StyleSheet,
@@ -13,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { BORDER_RADIUS, COLORS, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, SHADOW, SPACING } from '../../theme/theme';
-import { IMAGES } from '../../constants/images';
+import { FILTER_CHIPS, MENU_ITEMS, RESTAURANT_DETAILS_COPY } from '../../data/RestaurantDetailsData';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
@@ -32,29 +31,8 @@ type LocalRouteParams = {
 	RestaurantDetails: RestaurantDetailsParams;
 };
 
-type MenuItem = {
-	id: string;
-	name: string;
-	description: string;
-	originalPrice: string;
-	discountedPrice: string;
-	image: ImageSourcePropType;
-	isVeg: boolean;
-	eligibleForCoupons: boolean;
-};
-
-const MENU_ITEMS: MenuItem[] = [
-	{
-		id: 'm1',
-		name: 'Veg Delight',
-		description: 'Indulge in the perfect blend of smoky Tandoori Paneer Tikka and hearty R...more',
-		originalPrice: '₹679',
-		discountedPrice: 'Get for ₹339',
-		image: IMAGES.onboarding.third,
-		isVeg: true,
-		eligibleForCoupons: false,
-	},
-];
+const formatPrice = (value: number): string => `₹${value}`;
+const formatDeal = (value: number): string => `Get for ₹${value}`;
 
 const RestaurantDetails = (): React.ReactElement => {
 	const { top, bottom } = useSafeAreaInsets();
@@ -153,35 +131,38 @@ const RestaurantDetails = (): React.ReactElement => {
 				<Pressable style={({ pressed }) => [styles.offerHeaderRow, pressed && styles.offerRowPressed]}>
 					<View style={styles.offerHeaderLeft}>
 						<MaterialCommunityIcons name="brightness-percent" size={18} color={themeColors.accentText} />
-						<Text style={styles.offerHeaderText}>Items at 50% off</Text>
+						<Text style={styles.offerHeaderText}>{RESTAURANT_DETAILS_COPY.offerTitle}</Text>
 					</View>
 					<View style={styles.offerHeaderRight}>
-						<Text style={styles.offerCountText}>5 offers</Text>
+						<Text style={styles.offerCountText}>{RESTAURANT_DETAILS_COPY.offerCount}</Text>
 						<Ionicons name="chevron-down" size={16} color={themeColors.iconDefault} />
 					</View>
 				</Pressable>
 
 				<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollContent}>
-					<Pressable style={({ pressed }) => [styles.filterChip, pressed && styles.filterChipPressed]}>
-						<Ionicons name="options-outline" size={16} color={themeColors.text.title} />
-						<Text style={styles.filterChipText}>Filters (1)</Text>
-						<Ionicons name="chevron-down" size={14} color={themeColors.text.title} />
-					</Pressable>
-					<Pressable style={({ pressed }) => [styles.filterChipActive, pressed && styles.filterChipPressed]}>
-						<Ionicons name="eye-off-outline" size={16} color={themeColors.text.title} />
-						<Text style={styles.filterChipText}>Hide non-veg</Text>
-						<Ionicons name="close" size={14} color={themeColors.text.title} />
-					</Pressable>
-					<Pressable style={({ pressed }) => [styles.filterChip, pressed && styles.filterChipPressed]}>
-						<Ionicons name="checkmark-circle-outline" size={16} color={themeColors.success} />
-						<Text style={styles.filterChipText}>Highly rated</Text>
-					</Pressable>
+					{FILTER_CHIPS.map((chip) => {
+						const chipStyle = chip.variant === 'active' ? styles.filterChipActive : styles.filterChip;
+						const iconColor = chip.variant === 'success' ? themeColors.success : themeColors.text.title;
+
+						return (
+							<Pressable
+								key={chip.id}
+								style={({ pressed }) => [chipStyle, pressed && styles.filterChipPressed]}
+							>
+								<Ionicons name={chip.icon} size={16} color={iconColor} />
+								<Text style={styles.filterChipText}>{chip.label}</Text>
+								{chip.rightIcon && (
+									<Ionicons name={chip.rightIcon} size={14} color={iconColor} />
+								)}
+							</Pressable>
+						);
+					})}
 				</ScrollView>
 
 				<View style={styles.menuSectionHeader}>
-					<Text style={styles.menuSectionTitle}>Items at 50% off</Text>
+					<Text style={styles.menuSectionTitle}>{RESTAURANT_DETAILS_COPY.menuTitle}</Text>
 					<Pressable hitSlop={10}>
-						<Text style={styles.menuSectionLink}>View coupon details</Text>
+						<Text style={styles.menuSectionLink}>{RESTAURANT_DETAILS_COPY.menuLink}</Text>
 					</Pressable>
 				</View>
 
@@ -195,8 +176,8 @@ const RestaurantDetails = (): React.ReactElement => {
 							)}
 							<Text style={styles.menuItemTitle}>{item.name}</Text>
 							<View style={styles.menuPriceRow}>
-								<Text style={styles.menuOriginalPrice}>{item.originalPrice}</Text>
-								<Text style={styles.menuDiscountedPrice}>{item.discountedPrice}</Text>
+								<Text style={styles.menuOriginalPrice}>{formatPrice(item.originalPrice)}</Text>
+								<Text style={styles.menuDiscountedPrice}>{formatDeal(item.discountedPrice)}</Text>
 							</View>
 							<Text style={styles.menuDescription}>{item.description}</Text>
 							{!item.eligibleForCoupons && (
@@ -206,7 +187,10 @@ const RestaurantDetails = (): React.ReactElement => {
 
 						<View style={styles.menuCardRight}>
 							<View style={styles.menuImageWrapper}>
-								<Image source={item.image} style={styles.menuImage} />
+								<Image
+									source={typeof item.image === 'string' ? { uri: item.image } : item.image}
+									style={styles.menuImage}
+								/>
 								<Pressable style={({ pressed }) => [styles.addButton, pressed && styles.addButtonPressed]}>
 									<Text style={styles.addButtonText}>ADD</Text>
 									<View style={styles.addButtonIcon}>
@@ -219,7 +203,7 @@ const RestaurantDetails = (): React.ReactElement => {
 				))}
 
 				<Pressable style={({ pressed }) => [styles.nextSectionRow, pressed && styles.offerRowPressed]}>
-					<Text style={styles.nextSectionText}>Items starting at ₹79</Text>
+					<Text style={styles.nextSectionText}>{RESTAURANT_DETAILS_COPY.nextSectionTitle}</Text>
 					<Ionicons name="chevron-down" size={16} color={themeColors.iconDefault} />
 				</Pressable>
 			</ScrollView>

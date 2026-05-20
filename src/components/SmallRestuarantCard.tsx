@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View, Image, useColorScheme, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
+import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, SHADOW } from '../theme/theme';
 import { RestaurantCardProps } from '../data/RestaurantCard';
 
@@ -13,15 +14,29 @@ export const RestaurantCard = ({
   rating,
   name,
   deliveryTime,
+  priceForOne,
   offerText,
   style,
 }: RestaurantCardProps): React.ReactElement => {
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+
+  const handlePress = (): void => {
+    navigation.navigate('RestaurantDetails', {
+      name,
+      priceForOne: priceForOne ?? '₹150 for one',
+      rating,
+      deliveryTime,
+    });
+  };
 
   return (
-    <View style={[styles.container, style, SHADOW.md]}>
+    <Pressable
+      style={({ pressed }) => [styles.container, style, pressed && styles.containerPressed]}
+      onPress={handlePress}
+    >
       <View style={styles.imageContainer}>
         <View style={styles.imageWrapper}>
           <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
@@ -47,7 +62,7 @@ export const RestaurantCard = ({
           <Text style={styles.deliveryText} numberOfLines={1} adjustsFontSizeToFit>{deliveryTime}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -58,6 +73,10 @@ const getStyles = (colors: ThemeColors) =>
       borderRadius: BORDER_RADIUS.md,
       marginBottom: SPACING.xs,
       overflow: 'hidden',
+      ...SHADOW.md,
+    },
+    containerPressed: {
+      opacity: 0.92,
     },
     imageContainer: {
       position: 'relative',

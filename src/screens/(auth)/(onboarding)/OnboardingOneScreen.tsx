@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Pressable, PanResponder, useColorScheme, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, Pressable, PanResponder, useColorScheme, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
@@ -14,7 +14,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../../../theme/theme';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../navigation';
-import { IMAGES } from '../../../constants/images';
+import { ONBOARDING_ONE } from '../../../data/OnboardingData';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'OnboardingOne'>;
 type ThemeMode = keyof typeof COLORS;
@@ -86,25 +86,25 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Top Content */}
         <View style={styles.topContainer}>
           <Animated.Image 
-            source={IMAGES.onboarding.shield}
+            source={ONBOARDING_ONE.icon}
             style={styles.topIcon}
             entering={FadeInDown.duration(600).delay(100)}
             resizeMode="contain"
           />
           <Animated.Text style={styles.titleText} entering={FadeInDown.duration(600).delay(200)}>
-            Only certified{'\n'}restaurants.{'\n'}
-            <Text style={styles.highlightText}>Only the best.</Text>
+            {ONBOARDING_ONE.titlePrefix}
+            <Text style={styles.highlightText}>{ONBOARDING_ONE.titleHighlight}</Text>
           </Animated.Text>
           
           <Animated.Text style={styles.subtitleText} entering={FadeInDown.duration(600).delay(300)}>
-            Every restaurant on our platform is certified for hygiene, quality, and safety.
+            {ONBOARDING_ONE.subtitle}
           </Animated.Text>
         </View>
 
         {/* Main Image and Card */}
         <View style={styles.imageContainer}>
           <Animated.Image 
-            source={IMAGES.onboarding.first}
+            source={ONBOARDING_ONE.image}
             style={styles.mainImage}
             entering={FadeInDown.duration(600).delay(400)}
             resizeMode="contain"
@@ -114,7 +114,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Bottom Actions */}
         <Animated.View style={[styles.bottomContainer, SHADOW.md]} entering={FadeInUp.duration(600).delay(700)}>
           <View style={styles.pillIndicator} />
-          <Text style={styles.swipeText}>Swipe up to get started</Text>
+          <Text style={styles.swipeText}>{ONBOARDING_ONE.swipeLabel}</Text>
           
           <Pressable onPress={handleNext} style={styles.nextButtonContainer}>
             <Animated.View style={[styles.nextButton, animatedIconStyle]}>

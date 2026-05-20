@@ -44,7 +44,7 @@ const HomeScreen = (): React.ReactElement => {
                 <Pressable style={styles.categoryItem}>
                   <View style={styles.categoryImageWrapper}>
                     <Image 
-                      source={item.imageUrl} 
+                      source={typeof item.imageUrl === 'string' ? { uri: item.imageUrl } : item.imageUrl}
                       style={item.isSpecial ? styles.specialCategoryImage : styles.categoryImage} 
                     />
                   </View>
@@ -100,6 +100,7 @@ const HomeScreen = (): React.ReactElement => {
               rating={item.rating}
               name={item.name}
               deliveryTime={item.deliveryTime}
+              priceForOne={item.priceForOne}
               offerText={item.offerText}
               style={styles.card}
             />
@@ -117,6 +118,7 @@ const HomeScreen = (): React.ReactElement => {
                   rating={item.rating}
                   reviewCount={item.reviewCount}
                   deliveryTime={item.deliveryTime}
+                  priceForOne={item.priceForOne}
                   offerText={item.offerText}
                   isGold={item.isGold}
                 />
