@@ -8,7 +8,7 @@ import { IMAGES } from '../../constants/images';
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
-import { FILTER_TABS, ONGOING_ORDER, COMPLETED_ORDERS } from '../../constants/OrdersData';
+import { FILTER_TABS, ONGOING_ORDER, COMPLETED_ORDERS } from '../../data/OrdersData';
 import HygieneBadge from '../../components/HygieneBadge';
 
 const OrdersScreen = (): React.ReactElement => {

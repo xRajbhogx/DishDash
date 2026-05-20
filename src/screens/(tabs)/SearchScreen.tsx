@@ -9,7 +9,7 @@ import { IMAGES } from '../../constants/images';
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
-import { POPULAR_SEARCHES, RECENT_SEARCHES, RECOMMENDED_RESULTS } from '../../constants/SearchData';
+import { POPULAR_SEARCHES, RECENT_SEARCHES, RECOMMENDED_RESULTS } from '../../data/SearchData';
 
 const SearchScreen = (): React.ReactElement => {
   const { top, bottom } = useSafeAreaInsets();

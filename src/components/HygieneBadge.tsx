@@ -20,7 +20,7 @@ export const HygieneBadge = ({ variant = 'overlay-text', style }: HygieneBadgePr
     return (
       <View style={[styles.overlayIcon, SHADOW.sm, style]}>
         <MaterialCommunityIcons name="shield-check-outline" size={16} color={themeColors.themedIcon} />
-      </View>
+        </View> 
     );
   }
 
@@ -43,6 +43,10 @@ export const HygieneBadge = ({ variant = 'overlay-text', style }: HygieneBadgePr
         <Text style={styles.overlaySmallText}>Certified</Text>
       </View>
     </View>
+    
+
+
+
   );
 };
 

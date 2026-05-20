@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, Image, useColorScheme, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, SHADOW } from '../theme/theme';
-import { RestaurantCardProps } from '../constants/RestaurantCard';
+import { RestaurantCardProps } from '../data/RestaurantCard';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];

@@ -1,4 +1,4 @@
-import { IMAGES } from './images';
+import { IMAGES } from '../constants/images';
 
 export const FILTER_TABS = ['All Orders', 'Ongoing', 'Completed', 'Cancelled'];
 

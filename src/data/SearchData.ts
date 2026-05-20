@@ -1,4 +1,4 @@
-import { IMAGES } from './images';
+import { IMAGES } from '../constants/images';
 
 export const POPULAR_SEARCHES = [
   { id: '1', name: 'Pizza', icon: '🍕', type: 'emoji' },

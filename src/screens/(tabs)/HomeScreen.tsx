@@ -5,7 +5,7 @@ import React, { useMemo } from 'react'
 import RestaurantCard from '../../components/SmallRestuarantCard'
 import FeaturedRestaurantCard from '../../components/FeaturedRestaurantCard'
 import { COLORS, SPACING, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme'
-import { CATEGORIES_DATA, DUMMY_DATA, FEATURED_DATA } from '../../constants/RestaurantCard'
+import { CATEGORIES_DATA, DUMMY_DATA, FEATURED_DATA } from '../../data/RestaurantCard'
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 

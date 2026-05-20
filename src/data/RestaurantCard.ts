@@ -1,5 +1,5 @@
 import { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
-import { IMAGES } from "./images";
+import { IMAGES } from "../constants/images";
 
 export interface RestaurantCardProps {
   imageUrl: string | ImageSourcePropType;
