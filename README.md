@@ -1,4 +1,5 @@
 # DishDash 🍔
+Demo video --> https://drive.google.com/file/d/1b7IbZgo4I066fedciEyiW9bhzC1pitM5/view?usp=sharing
 
 A food delivery app built with React Native and Expo. The focus of this project is navigation — every major React Navigation pattern is used: nested stacks, bottom tabs, a drawer, conditional auth flow, deep linking, and programmatic navigation.
 
