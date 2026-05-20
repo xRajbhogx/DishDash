@@ -4,13 +4,21 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation';
 import { OTP_CONTENT } from '../../data/AuthData';
 
+import { useAuth } from '../../context/AuthContext';
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Otp'>;
 
 const OtpScreen = ({ navigation }: Props): React.ReactElement => {
+  const { login } = useAuth();
+
+  const handleVerify = async (): Promise<void> => {
+    await login('user@test.com', 'password');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{OTP_CONTENT.title}</Text>
-      <Pressable onPress={() => navigation.replace('Tabs')} style={styles.button}>
+      <Pressable onPress={handleVerify} style={styles.button}>
         <Text style={styles.buttonText}>{OTP_CONTENT.primaryActionLabel}</Text>
       </Pressable>
     </View>

@@ -24,10 +24,16 @@ import {
   SHADOW,
 } from '../../theme/theme';
 
+import { useAuth } from '../../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
 const ProfileScreen = (): React.ReactElement => {
+  const { logout } = useAuth();
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const systemTheme = useColorScheme() ?? 'light';
   const [themeOverride, setThemeOverride] = useState<ThemeMode | null>(null);
   const theme: ThemeMode = themeOverride ?? (systemTheme as ThemeMode);
@@ -58,14 +64,21 @@ const ProfileScreen = (): React.ReactElement => {
             <Pressable style={styles.headerIconButton} hitSlop={8}>
               <Ionicons name="notifications-outline" size={22} color={themeColors.text.title} />
             </Pressable>
-            <Pressable style={styles.headerIconButton} hitSlop={8}>
+            <Pressable 
+              style={styles.headerIconButton} 
+              hitSlop={8}
+              onPress={() => navigation.openDrawer()}
+            >
               <Ionicons name="settings-outline" size={22} color={themeColors.text.title} />
             </Pressable>
           </View>
         </View>
 
         {/* User Card */}
-        <Pressable style={[styles.userCard, SHADOW.sm]}>
+        <Pressable 
+          style={[styles.userCard, SHADOW.sm]}
+          onPress={() => navigation.openDrawer()}
+        >
           <View style={styles.avatarContainer}>
             <Text style={styles.avatarText}>{PROFILE_USER.initials}</Text>
             <View style={styles.onlineBadge} />
@@ -128,10 +141,16 @@ const ProfileScreen = (): React.ReactElement => {
         ))}
 
         {/* Log Out */}
-        <Pressable style={({ pressed }) => [styles.logoutButton, { opacity: pressed ? 0.7 : 1 }]}>
+        <Pressable 
+          style={({ pressed }) => [styles.logoutButton, { opacity: pressed ? 0.7 : 1 }]}
+          onPress={() => {
+            logout();
+          }}
+        >
           <Ionicons name="log-out-outline" size={20} color={themeColors.danger} style={styles.logoutIcon} />
           <Text style={styles.logoutText}>{PROFILE_ACTIONS.logoutLabel}</Text>
         </Pressable>
+
 
       </ScrollView>
     </View>

@@ -104,7 +104,7 @@ const OnboardingOneScreen = ({ navigation }: Props): React.ReactElement => {
         {/* Main Image and Card */}
         <View style={styles.imageContainer}>
           <Animated.Image 
-            source={ONBOARDING_ONE.image}
+            source={require('../../../../assets/images/foods/4.jpg')}
             style={styles.mainImage}
             entering={FadeInDown.duration(600).delay(400)}
             resizeMode="contain"

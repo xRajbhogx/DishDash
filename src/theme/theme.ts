@@ -53,7 +53,7 @@ export const COLORS = {
         hygieneBoxBg: '#FFF8F5',
     },
     dark: {
-        bg: '#111111ff',
+        bg: '#010000ff',
         buttonBg: '#ff9924',
         text:{
             title: '#FFFFFF',

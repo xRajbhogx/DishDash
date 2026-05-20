@@ -13,6 +13,8 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { BORDER_RADIUS, COLORS, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, SHADOW, SPACING } from '../../theme/theme';
 import { FILTER_CHIPS, MENU_ITEMS, RESTAURANT_DETAILS_COPY } from '../../data/RestaurantDetailsData';
+import { useCart } from '../../context/CartContext';
+import MenuAddButton from '../../components/MenuAddButton';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
@@ -41,6 +43,7 @@ const RestaurantDetails = (): React.ReactElement => {
 	const styles = useMemo(() => getStyles(themeColors, top, bottom), [themeColors, top, bottom]);
 	const navigation = useNavigation<NavigationProp<ParamListBase>>();
 	const route = useRoute<RouteProp<LocalRouteParams, 'RestaurantDetails'>>();
+	const { addToCart, cartCount, items } = useCart();
 
 	const restaurantName = route.params?.name ?? 'Makhani Darbar';
 	const priceForOne = route.params?.priceForOne ?? '₹150 for one';
@@ -53,37 +56,6 @@ const RestaurantDetails = (): React.ReactElement => {
 	return (
 		<View style={styles.container}>
 			<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-				<View style={styles.headerRow}>
-					<Pressable
-						onPress={() => navigation.goBack()}
-						style={({ pressed }) => [styles.backButton, pressed && styles.iconButtonPressed]}
-						hitSlop={10}
-					>
-						<Ionicons name="chevron-back" size={22} color={themeColors.text.title} />
-					</Pressable>
-
-					<View style={styles.headerActions}>
-						<Pressable
-							style={({ pressed }) => [styles.searchPill, pressed && styles.searchPillPressed]}
-							hitSlop={6}
-						>
-							<Ionicons name="search-outline" size={16} color={themeColors.text.title} />
-							<Text style={styles.searchPillText}>Search</Text>
-						</Pressable>
-						<Pressable
-							style={({ pressed }) => [styles.headerIconButton, pressed && styles.iconButtonPressed]}
-							hitSlop={8}
-						>
-							<Ionicons name="person-add-outline" size={18} color={themeColors.text.title} />
-						</Pressable>
-						<Pressable
-							style={({ pressed }) => [styles.headerIconButton, pressed && styles.iconButtonPressed]}
-							hitSlop={8}
-						>
-							<Ionicons name="ellipsis-vertical" size={18} color={themeColors.text.title} />
-						</Pressable>
-					</View>
-				</View>
 
 				<View style={styles.titleRow}>
 					<View style={styles.titleLeft}>
@@ -191,12 +163,13 @@ const RestaurantDetails = (): React.ReactElement => {
 									source={typeof item.image === 'string' ? { uri: item.image } : item.image}
 									style={styles.menuImage}
 								/>
-								<Pressable style={({ pressed }) => [styles.addButton, pressed && styles.addButtonPressed]}>
-									<Text style={styles.addButtonText}>ADD</Text>
-									<View style={styles.addButtonIcon}>
-										<Ionicons name="add" size={14} color={themeColors.iconOnDark} />
-									</View>
-								</Pressable>
+								<MenuAddButton 
+									itemId={item.id}
+									itemName={item.name}
+									itemPrice={item.discountedPrice || item.originalPrice}
+									isVeg={item.isVeg || false}
+									imageUrl={typeof item.image === 'string' ? item.image : undefined}
+								/>
 							</View>
 						</View>
 					</View>
@@ -207,6 +180,28 @@ const RestaurantDetails = (): React.ReactElement => {
 					<Ionicons name="chevron-down" size={16} color={themeColors.iconDefault} />
 				</Pressable>
 			</ScrollView>
+
+			{/* Static cart banner — visible when cart is not empty */}
+			{cartCount > 0 && (
+				<View style={styles.cartBanner}>
+					<View style={styles.cartBannerLeft}>
+						<View style={styles.cartBannerBadge}>
+							<Ionicons name="cart" size={13} color="#FFFFFF" />
+							<Text style={styles.cartBannerBadgeText}>{cartCount}</Text>
+						</View>
+						<Text style={styles.cartBannerText}>
+							{items.length} {items.length === 1 ? 'item' : 'items'} · ₹{items.reduce((s, i) => s + i.price * i.quantity, 0)}
+						</Text>
+					</View>
+					<Pressable
+						onPress={() => navigation.navigate('Cart')}
+						style={({ pressed }) => [styles.cartBannerCTA, pressed && styles.cartBannerCTAPressed]}
+					>
+						<Text style={styles.cartBannerCTAText}>View Cart</Text>
+						<Ionicons name="arrow-forward" size={14} color={themeColors.buttonBg} />
+					</Pressable>
+				</View>
+			)}
 
 			<Pressable style={({ pressed }) => [styles.menuButton, pressed && styles.menuButtonPressed]}>
 				<Ionicons name="restaurant-outline" size={16} color={themeColors.iconOnDark} />
@@ -592,6 +587,65 @@ const getStyles = (colors: ThemeColors, top: number, bottom: number) =>
 			fontSize: 13,
 			fontFamily: FONT_FAMILY.bold,
 			marginLeft: 8,
+		},
+		// Static cart banner above Menu button
+		cartBanner: {
+			position: 'absolute',
+			bottom: bottom + SPACING.lg + 52, // 52 ≈ menu button height + gap
+			left: SPACING.md,
+			right: SPACING.md,
+			flexDirection: 'row',
+			alignItems: 'center',
+			backgroundColor: colors.card,
+			paddingHorizontal: SPACING.md,
+			paddingVertical: 10,
+			borderRadius: BORDER_RADIUS.xl,
+			borderWidth: 1.5,
+			borderColor: colors.buttonBg,
+			...SHADOW.md,
+		},
+		cartBannerLeft: {
+			flex: 1,
+			flexDirection: 'row',
+			alignItems: 'center',
+		},
+		cartBannerBadge: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			backgroundColor: colors.buttonBg,
+			borderRadius: BORDER_RADIUS.full,
+			paddingHorizontal: 8,
+			paddingVertical: 4,
+			marginRight: SPACING.sm,
+			gap: 4,
+		},
+		cartBannerBadgeText: {
+			color: '#FFFFFF',
+			fontSize: 12,
+			fontFamily: FONT_FAMILY.bold,
+		},
+		cartBannerText: {
+			fontSize: FONT_SIZE.sm,
+			fontFamily: FONT_FAMILY.semibold,
+			color: colors.text.title,
+		},
+		cartBannerCTA: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			gap: 4,
+			borderWidth: 1.5,
+			borderColor: colors.buttonBg,
+			paddingHorizontal: SPACING.md,
+			paddingVertical: 7,
+			borderRadius: BORDER_RADIUS.full,
+		},
+		cartBannerCTAPressed: {
+			opacity: 0.7,
+		},
+		cartBannerCTAText: {
+			fontSize: FONT_SIZE.sm,
+			fontFamily: FONT_FAMILY.bold,
+			color: colors.buttonBg,
 		},
 	});
 

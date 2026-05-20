@@ -88,7 +88,7 @@ const OnboardingTwoScreen = ({ navigation }: Props): React.ReactElement => {
 
         <Animated.View style={styles.bottomSection} entering={FadeInUp.duration(600).delay(600)}>
           <Pressable 
-            onPress={() => navigation.navigate('Tabs')}
+            onPress={() => navigation.navigate('Login')}
             hitSlop={8}
             style={styles.skipButton}
           >

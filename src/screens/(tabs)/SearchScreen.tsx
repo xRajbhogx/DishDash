@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput, Pressable, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, Feather } from '@expo/vector-icons';
@@ -10,11 +10,23 @@ type ThemeColors = (typeof COLORS)[ThemeMode];
 
 import { POPULAR_SEARCHES, RECENT_SEARCHES, RECOMMENDED_RESULTS } from '../../data/SearchData';
 
+
 const SearchScreen = (): React.ReactElement => {
   const { top, bottom } = useSafeAreaInsets();
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
+  
+  const [searchText, setSearchText] = useState('');
+
+  const filteredResults = useMemo(() => {
+    if (!searchText.trim()) return RECOMMENDED_RESULTS;
+    const lower = searchText.toLowerCase();
+    return RECOMMENDED_RESULTS.filter(item => 
+      item.name.toLowerCase().includes(lower) || 
+      item.tags.toLowerCase().includes(lower)
+    );
+  }, [searchText]);
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
@@ -41,8 +53,14 @@ const SearchScreen = (): React.ReactElement => {
             style={styles.searchInput}
             placeholder="Search for restaurants, cuisines or dishes"
             placeholderTextColor={themeColors.text.input}
+            value={searchText}
+            onChangeText={setSearchText}
           />
-          <Ionicons name="mic-outline" size={20} color={themeColors.iconDefault} />
+          {searchText.length > 0 ? (
+            <Pressable onPress={() => setSearchText('')} hitSlop={10}>
+              <Ionicons name="close" size={20} color={themeColors.iconDefault} />
+            </Pressable>
+          ) : null}
         </View>
 
         {/* Popular Searches */}
@@ -65,7 +83,7 @@ const SearchScreen = (): React.ReactElement => {
         </View>
 
         {/* Recent Searches */}
-        <View style={styles.sectionContainer}>
+        {/* <View style={styles.sectionContainer}>
           <View style={styles.sectionHeaderRow}>
             <Text style={styles.sectionTitleInline}>Recent Searches</Text>
             <Pressable hitSlop={10}>
@@ -87,7 +105,7 @@ const SearchScreen = (): React.ReactElement => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         {/* Recommended for you */}
         <View style={styles.sectionContainer}>
@@ -99,8 +117,9 @@ const SearchScreen = (): React.ReactElement => {
           </View>
 
           <View style={styles.recommendedList}>
-             {RECOMMENDED_RESULTS.map((item) => (
-                <SearchRestaurantCard 
+            {filteredResults.length > 0 ? (
+              filteredResults.map((item) => (
+                <SearchRestaurantCard
                   key={item.id}
                   imageUrl={item.imageUrl}
                   name={item.name}
@@ -110,7 +129,10 @@ const SearchScreen = (): React.ReactElement => {
                   tags={item.tags}
                   priceForOne={item.priceForOne}
                 />
-             ))}
+              ))
+            ) : (
+              <Text style={styles.noResultsText}>No restaurants found matching "{searchText}"</Text>
+            )}
           </View>
         </View>
 
@@ -251,7 +273,14 @@ const getStyles = (colors: ThemeColors) => StyleSheet.create({
     color: colors.text.subtitle,
   },
   recommendedList: {
-    // Empty for now, padding is handled in the card
+    // padding handled by SearchRestaurantCard
+  },
+  noResultsText: {
+    padding: SPACING.md,
+    fontSize: FONT_SIZE.md,
+    color: colors.text.subtitle,
+    fontFamily: FONT_FAMILY.medium,
+    textAlign: 'center',
   }
 });
 

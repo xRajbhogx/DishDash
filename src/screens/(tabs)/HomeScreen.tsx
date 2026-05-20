@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, useColorScheme, FlatList, Pressable, Switch, Image } from 'react-native'
+import { StyleSheet, Text, View, useColorScheme, FlatList, Pressable, Switch, Image, useWindowDimensions } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useMemo } from 'react'
@@ -9,13 +9,22 @@ import { CATEGORIES_DATA, DUMMY_DATA, FEATURED_DATA } from '../../data/Restauran
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
-
-
 const HomeScreen = (): React.ReactElement => {
   const theme = (useColorScheme() ?? 'light' ) as ThemeMode;
   const themeColors = COLORS[theme];
   const {bottom} = useSafeAreaInsets();
   const styles = useMemo(() => getStyles(themeColors, bottom), [themeColors, bottom]);
+  
+  const { width } = useWindowDimensions();
+  const columnWidth = useMemo(() => (width - SPACING.md * 3) / 2, [width]);
+
+  const chunkedRecommended = useMemo(() => {
+    const chunks = [];
+    for (let i = 0; i < DUMMY_DATA.length; i += 2) {
+      chunks.push(DUMMY_DATA.slice(i, i + 2));
+    }
+    return chunks;
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -29,7 +38,7 @@ const HomeScreen = (): React.ReactElement => {
               <Text style={styles.addressTitle}>Home</Text>
               <Ionicons name="chevron-down" size={20} color={themeColors.text.title} />
             </View>
-            <Text style={styles.addressSubtitle} numberOfLines={1}>REMOVED</Text>
+            <Text style={styles.addressSubtitle} numberOfLines={1}>House-23, Sector-89, Dwarka, Del...</Text>
           </View>
 
           {/* Categories Horizontal List */}
@@ -59,12 +68,10 @@ const HomeScreen = (): React.ReactElement => {
         </View>
 
         <FlatList
-          data={DUMMY_DATA}
+          data={FEATURED_DATA}
           keyExtractor={(item) => item.id}
-          numColumns={3}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
-          columnWrapperStyle={styles.columnWrapper}
           ListHeaderComponent={() => (
             <View>
               <View style={styles.filtersRow}>
@@ -92,38 +99,45 @@ const HomeScreen = (): React.ReactElement => {
               </View>
 
               <Text style={styles.headerTitle}>RECOMMENDED FOR YOU</Text>
+
+              <FlatList
+                data={chunkedRecommended}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(_, index) => `col-${index}`}
+                contentContainerStyle={styles.recommendedContent}
+                renderItem={({ item: columnItems }) => (
+                  <View style={styles.recommendedColumn}>
+                    {columnItems.map((item) => (
+                      <RestaurantCard 
+                        key={item.id}
+                        imageUrl={item.imageUrl}
+                        rating={item.rating}
+                        name={item.name}
+                        deliveryTime={item.deliveryTime}
+                        priceForOne={item.priceForOne}
+                        offerText={item.offerText}
+                        style={[styles.recommendedCard, { width: columnWidth }]}
+                      />
+                    ))}
+                  </View>
+                )}
+              />
+
+              <Text style={styles.featuredTitle}>78 RESTAURANTS DELIVERING TO YOU</Text>
             </View>
           )}
           renderItem={({ item }) => (
-            <RestaurantCard 
+            <FeaturedRestaurantCard
               imageUrl={item.imageUrl}
-              rating={item.rating}
               name={item.name}
+              rating={item.rating}
+              reviewCount={item.reviewCount}
               deliveryTime={item.deliveryTime}
               priceForOne={item.priceForOne}
               offerText={item.offerText}
-              style={styles.card}
+              isGold={item.isGold}
             />
-          )}
-          ListFooterComponent={() => (
-            <View style={styles.featuredSection}>
-              <Text style={styles.featuredTitle}>78 RESTAURANTS DELIVERING TO YOU</Text>
-              {/* <Text style={styles.featuredSubtitle}>Featured</Text> */}
-              
-              {FEATURED_DATA.map((item) => (
-                <FeaturedRestaurantCard
-                  key={item.id}
-                  imageUrl={item.imageUrl}
-                  name={item.name}
-                  rating={item.rating}
-                  reviewCount={item.reviewCount}
-                  deliveryTime={item.deliveryTime}
-                  priceForOne={item.priceForOne}
-                  offerText={item.offerText}
-                  isGold={item.isGold}
-                />
-              ))}
-            </View>
           )}
         />
       </View>
@@ -140,7 +154,7 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
   container: {
       flex: 1,
       paddingHorizontal: SPACING.md,
-      paddingTop: SPACING.md, // reduced slightly to fit everything nicely
+      paddingTop: SPACING.md,
   },
   headerContainer: {
   },
@@ -208,7 +222,7 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
     marginBottom: SPACING.md,
   },
   categoriesSection: {
-    marginLeft: -SPACING.md, // Make list bleed to edges
+    marginLeft: -SPACING.md,
     marginRight: -SPACING.md,
   },
   categoriesContent: {
@@ -253,19 +267,15 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
   listContent: {
     paddingBottom: SPACING.xl,
   },
-  columnWrapper: {
-    justifyContent: 'space-between',
-    marginBottom: SPACING.sm, // spacing between rows
+  recommendedContent: {
+    paddingBottom: SPACING.md,
   },
-  card: {
-    flex: 1,
-    marginHorizontal: SPACING.xs, // small gap between columns
+  recommendedColumn: {
+    marginRight: SPACING.md,
+    gap: SPACING.md,
   },
-  featuredSection: {
-    marginTop: SPACING.lg,
-    paddingTop: SPACING.xl,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  recommendedCard: {
+    marginBottom: 0,
   },
   featuredTitle: {
     color: colors.text.subtitle,
@@ -273,14 +283,8 @@ const getStyles = (colors: ThemeColors, bottom: number) => StyleSheet.create({
     fontFamily: FONT_FAMILY.regular,
     fontWeight: 'bold',
     letterSpacing: 1.5,
+    marginTop: SPACING.lg,
     marginBottom: SPACING.md,
-  },
-  featuredSubtitle: {
-    color: colors.text.subtitle,
-    fontSize: FONT_SIZE.lg,
-    fontFamily: FONT_FAMILY.medium,
-    fontWeight: '500',
-    marginBottom: SPACING.lg,
   },
 });
 
