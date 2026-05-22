@@ -2,8 +2,7 @@ import { StyleSheet, Text, View, useColorScheme, FlatList, Pressable, Switch, Im
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useMemo } from 'react'
-import RestaurantCard from '../../components/SmallRestuarantCard'
-import FeaturedRestaurantCard from '../../components/FeaturedRestaurantCard'
+import { FeaturedRestaurantCard, SmallRestaurantCard } from '../../components/cards'
 import { COLORS, SPACING, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme'
 import { CATEGORIES_DATA, DUMMY_DATA, FEATURED_DATA } from '../../data/RestaurantCard'
 type ThemeMode = keyof typeof COLORS;
@@ -109,7 +108,7 @@ const HomeScreen = (): React.ReactElement => {
                 renderItem={({ item: columnItems }) => (
                   <View style={styles.recommendedColumn}>
                     {columnItems.map((item) => (
-                      <RestaurantCard 
+                      <SmallRestaurantCard 
                         key={item.id}
                         imageUrl={item.imageUrl}
                         rating={item.rating}

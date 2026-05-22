@@ -2,12 +2,20 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable, useColorScheme, ScrollView, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, SPACING, BORDER_RADIUS, SHADOW } from '../theme/theme';
 import { useCart } from '../context/CartContext';
+import type { RootStackParamList, TabsStackParamList } from './navigation';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
+
+type CartNavigationProp = CompositeNavigationProp<
+    NativeStackNavigationProp<RootStackParamList, 'Cart'>,
+    BottomTabNavigationProp<TabsStackParamList>
+>;
 
 // Mock user data — replace with real auth context when available
 const MOCK_USER = {
@@ -21,7 +29,7 @@ const CartScreen = (): React.ReactElement => {
     const theme = (useColorScheme() ?? 'light') as ThemeMode;
     const themeColors = COLORS[theme];
     const styles = useMemo(() => getStyles(themeColors, top, bottom), [themeColors, top, bottom]);
-    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+    const navigation = useNavigation<CartNavigationProp>();
     const { items, cartCount, clearCart, addToCart, removeFromCart, decrementQuantity } = useCart();
 
     const itemTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -31,7 +39,7 @@ const CartScreen = (): React.ReactElement => {
 
     const handleCheckout = () => {
         clearCart();
-        navigation.navigate('Home');
+        navigation.navigate('Home', { screen: 'HomeMain' });
     };
 
     return (
@@ -189,7 +197,7 @@ const CartScreen = (): React.ReactElement => {
                         <Text style={styles.emptyTitle}>Your cart is empty</Text>
                         <Text style={styles.emptySubtitle}>Add items from a restaurant to get started</Text>
                         <Pressable
-                            onPress={() => navigation.navigate('Home')}
+                            onPress={() => navigation.navigate('Home', { screen: 'HomeMain' })}
                             style={({ pressed }) => [styles.exploreButton, pressed && styles.pressed]}
                         >
                             <Text style={styles.exploreText}>Explore Restaurants</Text>

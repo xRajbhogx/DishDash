@@ -10,28 +10,21 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BORDER_RADIUS, COLORS, FONT_FAMILY, FONT_SIZE, FONT_WEIGHT, SHADOW, SPACING } from '../../theme/theme';
 import { FILTER_CHIPS, MENU_ITEMS, RESTAURANT_DETAILS_COPY } from '../../data/RestaurantDetailsData';
 import { useCart } from '../../context/CartContext';
 import MenuAddButton from '../../components/MenuAddButton';
+import type { HomeStackParamList, RootStackParamList } from '../navigation';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
-type RestaurantDetailsParams = {
-	name?: string;
-	priceForOne?: string;
-	rating?: number;
-	reviewCount?: string;
-	distance?: string;
-	area?: string;
-	deliveryTime?: string;
-};
-
-type LocalRouteParams = {
-	RestaurantDetails: RestaurantDetailsParams;
-};
+type RestaurantDetailsNavigationProp = CompositeNavigationProp<
+	NativeStackNavigationProp<HomeStackParamList, 'RestaurantDetails'>,
+	NativeStackNavigationProp<RootStackParamList>
+>;
 
 const formatPrice = (value: number): string => `₹${value}`;
 const formatDeal = (value: number): string => `Get for ₹${value}`;
@@ -41,8 +34,8 @@ const RestaurantDetails = (): React.ReactElement => {
 	const theme = (useColorScheme() ?? 'light') as ThemeMode;
 	const themeColors = COLORS[theme];
 	const styles = useMemo(() => getStyles(themeColors, top, bottom), [themeColors, top, bottom]);
-	const navigation = useNavigation<NavigationProp<ParamListBase>>();
-	const route = useRoute<RouteProp<LocalRouteParams, 'RestaurantDetails'>>();
+	const navigation = useNavigation<RestaurantDetailsNavigationProp>();
+	const route = useRoute<RouteProp<HomeStackParamList, 'RestaurantDetails'>>();
 	const { addToCart, cartCount, items } = useCart();
 
 	const restaurantName = route.params?.name ?? 'Makhani Darbar';

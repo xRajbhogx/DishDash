@@ -2,21 +2,29 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Image, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, SPACING, FONT_SIZE, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme';
 import { useCart } from '../../context/CartContext';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import HygieneBadge from '../../components/HygieneBadge';
 import { ONGOING_ORDER, COMPLETED_ORDERS } from '../../data/OrdersData';
+import type { RootStackParamList, TabsStackParamList } from '../navigation';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
+
+type OrdersNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabsStackParamList, 'Orders'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
 const OrdersScreen = (): React.ReactElement => {
   const { top, bottom } = useSafeAreaInsets();
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const screenStyles = useMemo(() => getStyles(themeColors), [themeColors]);
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const navigation = useNavigation<OrdersNavigationProp>();
 
   const { items, cartCount } = useCart();
   

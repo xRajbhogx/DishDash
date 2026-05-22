@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
-import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY } from '../theme/theme';
-import { RestaurantCardProps } from '../data/RestaurantCard';
-import HygieneBadge from './HygieneBadge';
+import { useNavigation, type NavigationProp } from '@react-navigation/native';
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_FAMILY } from '../../theme/theme';
+import { RestaurantCardProps } from '../../data/RestaurantCard';
+import HygieneBadge from '../HygieneBadge';
+import type { TabsStackParamList } from '../../screens/navigation';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
@@ -22,7 +23,7 @@ const SearchRestaurantCard = ({
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const navigation = useNavigation<NavigationProp<TabsStackParamList>>();
 
   const handlePress = (): void => {
     navigation.navigate('Home', {

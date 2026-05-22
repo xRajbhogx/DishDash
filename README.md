@@ -183,7 +183,7 @@ App.tsx
 
 | Method | Used where |
 |---|---|
-| `navigate` | [src/screens/(auth)/LoginScreen.tsx](src/screens/(auth)/LoginScreen.tsx) → Register/ForgotPassword, [src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx) → OnboardingTwo, [src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx) → OnboardingThree, [src/components/FeaturedRestaurantCard.tsx](src/components/FeaturedRestaurantCard.tsx) and [src/components/SmallRestuarantCard.tsx](src/components/SmallRestuarantCard.tsx) → RestaurantDetails with params, [src/components/SearchRestaurantCard.tsx](src/components/SearchRestaurantCard.tsx) → nested Home > RestaurantDetails with params, [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx) → Cart, [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) → Home |
+| `navigate` | [src/screens/(auth)/LoginScreen.tsx](src/screens/(auth)/LoginScreen.tsx) → Register/ForgotPassword, [src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx) → OnboardingTwo, [src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx) → OnboardingThree, [src/components/cards/FeaturedRestaurantCard.tsx](src/components/cards/FeaturedRestaurantCard.tsx) and [src/components/cards/SmallRestaurantCard.tsx](src/components/cards/SmallRestaurantCard.tsx) → RestaurantDetails with params, [src/components/cards/SearchRestaurantCard.tsx](src/components/cards/SearchRestaurantCard.tsx) → nested Home > RestaurantDetails with params, [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx) → Cart, [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) → Home |
 | `goBack` | [src/screens/navigation.tsx](src/screens/navigation.tsx) back button on RestaurantDetails, [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx), [src/screens/(auth)/ForgotPasswordScreen.tsx](src/screens/(auth)/ForgotPasswordScreen.tsx) |
 | `replace` | [src/screens/(auth)/(onboarding)/OnboardingScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingScreen.tsx) replaces the onboarding splash with Login |
 | `reset` | [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx) resets the stack before landing on Login |
@@ -204,7 +204,7 @@ navigation.navigate('RestaurantDetails', {
 });
 ```
 
-The detail screen reads them via `route.params` and uses `name` as the header title. The same destination is also reached from [src/components/SearchRestaurantCard.tsx](src/components/SearchRestaurantCard.tsx) via the nested `Home -> RestaurantDetails` path.
+The detail screen reads them via `route.params` and uses `name` as the header title. The same destination is also reached from [src/components/cards/SearchRestaurantCard.tsx](src/components/cards/SearchRestaurantCard.tsx) via the nested `Home -> RestaurantDetails` path.
 
 ---
 
@@ -272,11 +272,13 @@ src/
 ├── components/
 │   ├── atoms/
 │   │   └── SocialButton.tsx
+│   ├── cards/
+│   │   ├── FeaturedRestaurantCard.tsx
+│   │   ├── SearchRestaurantCard.tsx
+│   │   └── SmallRestaurantCard.tsx
 │   ├── CustomDrawerContent.tsx    # avatar + user name + drawer actions
 │   ├── CustomTabBar.tsx           # tab icons, cart badge, animated cart banner
-│   ├── FeaturedRestaurantCard.tsx
 │   ├── MenuAddButton.tsx
-│   ├── SearchRestaurantCard.tsx
 │   └── ...
 ├── context/
 │   ├── AuthContext.tsx            # isAuthenticated + login/logout

@@ -2,14 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput, Pressable, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import SearchRestaurantCard from '../../components/SearchRestaurantCard';
+import { SearchRestaurantCard } from '../../components/cards';
 import { COLORS, SPACING, FONT_SIZE, FONT_FAMILY, BORDER_RADIUS, SHADOW } from '../../theme/theme';
+import { POPULAR_SEARCHES, RECOMMENDED_RESULTS } from '../../data/SearchData';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
-
-import { POPULAR_SEARCHES, RECENT_SEARCHES, RECOMMENDED_RESULTS } from '../../data/SearchData';
-
 
 const SearchScreen = (): React.ReactElement => {
   const { top, bottom } = useSafeAreaInsets();
@@ -81,31 +79,6 @@ const SearchScreen = (): React.ReactElement => {
             <View style={{ width: SPACING.md }} />
           </ScrollView>
         </View>
-
-        {/* Recent Searches */}
-        {/* <View style={styles.sectionContainer}>
-          <View style={styles.sectionHeaderRow}>
-            <Text style={styles.sectionTitleInline}>Recent Searches</Text>
-            <Pressable hitSlop={10}>
-              <Text style={styles.clearAllText}>Clear All</Text>
-            </Pressable>
-          </View>
-          
-          <View style={styles.recentList}>
-            {RECENT_SEARCHES.map((item) => (
-              <View key={item.id} style={styles.recentItem}>
-                <Ionicons name="time-outline" size={20} color={themeColors.iconDefault} style={styles.recentIcon} />
-                <View style={styles.recentTextContainer}>
-                  <Text style={styles.recentName}>{item.name}</Text>
-                  <Text style={styles.recentSubtitle}>{item.subtitle}</Text>
-                </View>
-                <Pressable hitSlop={10}>
-                  <Ionicons name="close-outline" size={20} color={themeColors.chevron} />
-                </Pressable>
-              </View>
-            ))}
-          </View>
-        </View> */}
 
         {/* Recommended for you */}
         <View style={styles.sectionContainer}>

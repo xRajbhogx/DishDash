@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, Image, useColorScheme, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
-import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, SHADOW } from '../theme/theme';
-import { RestaurantCardProps } from '../data/RestaurantCard';
+import { useNavigation, type NavigationProp } from '@react-navigation/native';
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZE, FONT_WEIGHT, FONT_FAMILY, SHADOW } from '../../theme/theme';
+import { RestaurantCardProps } from '../../data/RestaurantCard';
+import type { HomeStackParamList } from '../../screens/navigation';
 
 type ThemeMode = keyof typeof COLORS;
 type ThemeColors = (typeof COLORS)[ThemeMode];
 
 
-export const RestaurantCard = ({
+export const SmallRestaurantCard = ({
   imageUrl,
   rating,
   name,
@@ -21,7 +22,7 @@ export const RestaurantCard = ({
   const theme = (useColorScheme() ?? 'light') as ThemeMode;
   const themeColors = COLORS[theme];
   const styles = useMemo(() => getStyles(themeColors), [themeColors]);
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const navigation = useNavigation<NavigationProp<HomeStackParamList>>();
 
   const handlePress = (): void => {
     navigation.navigate('RestaurantDetails', {
@@ -159,4 +160,4 @@ const getStyles = (colors: ThemeColors) =>
     },
   });
 
-export default RestaurantCard;
+export default SmallRestaurantCard;
