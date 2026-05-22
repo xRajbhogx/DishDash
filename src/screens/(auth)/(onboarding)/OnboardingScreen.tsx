@@ -12,7 +12,7 @@ const OnboardingScreen = ({ navigation }: Props): React.ReactElement => {
       <Text style={styles.title}>{ONBOARDING_SPLASH.title}</Text>
       <Text style={styles.subtitle}>{ONBOARDING_SPLASH.subtitle}</Text>
       <Pressable
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.replace('Login')}
         style={styles.button}
       >
         <Text style={styles.buttonText}>{ONBOARDING_SPLASH.ctaLabel}</Text>

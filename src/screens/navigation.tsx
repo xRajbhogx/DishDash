@@ -188,7 +188,7 @@ const Navigation = (): React.ReactElement => {
 	const themeColors = COLORS[theme];
 
 	const linking: LinkingOptions<RootStackParamList> = {
-		prefixes: ['dishdash://', 'DishDash://'],
+		prefixes: ['foodapp://', 'dishdash://', 'DishDash://'],
 		config: {
 			screens: {
 				Tabs: {

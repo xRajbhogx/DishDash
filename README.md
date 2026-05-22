@@ -3,6 +3,8 @@ Demo video --> https://drive.google.com/file/d/1b7IbZgo4I066fedciEyiW9bhzC1pitM5
 
 A food delivery app built with React Native and Expo. The focus of this project is navigation — every major React Navigation pattern is used: nested stacks, bottom tabs, a drawer, conditional auth flow, deep linking, and programmatic navigation.
 
+This README maps each evaluation item to the exact file or files that implement it in the current codebase.
+
 ---
 
 ## Project Requirements
@@ -78,7 +80,9 @@ Your app should include:
         reset
 
     Deep link support foodapp://restaurant/123 should open Restaurant Detail directly
-----
+
+Implementation details for the checklist are mapped below.
+
 
 
 ## Tech Stack
@@ -91,6 +95,23 @@ Your app should include:
 | Auth persistence | AsyncStorage |
 | Icons | @expo/vector-icons (bundled with Expo) |
 | Animations | react-native-reanimated v4 |
+
+---
+
+## Implementation Map
+
+| Evaluation area | Exact files in this project |
+|---|---|
+| Project setup | [App.tsx](App.tsx), [app.json](app.json), [src/screens/navigation.tsx](src/screens/navigation.tsx) |
+| Stack navigation | [src/screens/navigation.tsx](src/screens/navigation.tsx), [src/screens/(auth)/(onboarding)/OnboardingScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx), [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx), [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) |
+| Bottom tab navigation | [src/screens/navigation.tsx](src/screens/navigation.tsx), [src/components/CustomTabBar.tsx](src/components/CustomTabBar.tsx), [src/screens/(tabs)/SearchScreen.tsx](src/screens/(tabs)/SearchScreen.tsx), [src/screens/(tabs)/OrdersScreen.tsx](src/screens/(tabs)/OrdersScreen.tsx), [src/screens/(tabs)/ProfileScreen.tsx](src/screens/(tabs)/ProfileScreen.tsx) |
+| Drawer navigation | [src/screens/navigation.tsx](src/screens/navigation.tsx), [src/components/CustomDrawerContent.tsx](src/components/CustomDrawerContent.tsx), [src/screens/(tabs)/ProfileScreen.tsx](src/screens/(tabs)/ProfileScreen.tsx), [src/data/ProfileData.ts](src/data/ProfileData.ts) |
+| Auth flow | [src/context/AuthContext.tsx](src/context/AuthContext.tsx), [src/screens/navigation.tsx](src/screens/navigation.tsx), [src/screens/(auth)/LoginScreen.tsx](src/screens/(auth)/LoginScreen.tsx), [src/screens/(auth)/RegisterScreen.tsx](src/screens/(auth)/RegisterScreen.tsx), [src/screens/(auth)/ForgotPasswordScreen.tsx](src/screens/(auth)/ForgotPasswordScreen.tsx) |
+| Deep linking | [app.json](app.json), [src/screens/navigation.tsx](src/screens/navigation.tsx) |
+| Programmatic navigation | [src/screens/(auth)/(onboarding)/OnboardingScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingScreen.tsx) uses `replace`, [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx) uses `reset`, [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx) and [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) use `navigate` and `goBack`, [src/screens/(auth)/LoginScreen.tsx](src/screens/(auth)/LoginScreen.tsx) navigates to Register and Forgot Password |
+| UI and UX | [src/components/CustomTabBar.tsx](src/components/CustomTabBar.tsx), [src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx), [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx), [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) |
+| README and demo | This file and the demo link at the top of the README |
+| Overall understanding | [src/screens/navigation.tsx](src/screens/navigation.tsx) is the source of truth for nested navigator decisions |
 
 ---
 
@@ -114,10 +135,9 @@ App.tsx
 └── AuthProvider
     └── CartProvider
         └── Navigation (NavigationContainer)
-            │
             ├── [Unauthenticated]
             │     └── AuthStack (Stack)
-            │           ├── OnboardingScreen       ← multi-step, shown once
+    │           ├── OnboardingScreen
             │           ├── OnboardingOneScreen
             │           ├── OnboardingTwoScreen
             │           ├── OnboardingThreeScreen
@@ -125,49 +145,37 @@ App.tsx
             │           ├── RegisterScreen
             │           ├── ForgotPasswordScreen
             │           └── OtpScreen
-            │
             └── [Authenticated]
-                  └── MainTabs (BottomTabNavigator)
-                        │
-                        ├── Home (Tab)
-                        │     └── HomeStack (Stack)   ← nested navigator
-                        │           ├── HomeScreen
-                        │           ├── RestaurantDetails  ← tab bar hidden
-                        │           └── CartScreen         ← tab bar hidden
-                        │
-                        ├── Search (Tab)
-                        │     └── SearchScreen
-                        │
-                        ├── Orders (Tab)             ← badge when cart > 0
-                        │     └── OrdersScreen
-                        │
-                        └── Profile (Tab)
-                              └── ProfileDrawer (DrawerNavigator)
-                                    ├── ProfileScreen
-                                    ├── My Orders
-                                    ├── Settings
-                                    ├── Help
-                                    └── Logout → clears auth, resets to AuthStack
+      └── RootStack
+        ├── Tabs (DrawerNavigator)
+        │     └── TabsGroup (BottomTabNavigator)
+        │           ├── Home
+        │           │     └── HomeStack (Stack)
+        │           │           ├── HomeScreen
+        │           │           └── RestaurantDetails  ← tab bar hidden
+        │           ├── SearchScreen
+        │           ├── OrdersScreen  ← badge when cart > 0
+        │           └── ProfileScreen  ← opens drawer
+        └── CartScreen  ← root stack screen, tab bar hidden
 ```
 
 ### Why the structure is set up this way
 
-**HomeStack nested inside the Home tab** — RestaurantDetails and Cart need to live inside a stack so the bottom tab bar can be hidden on those screens. If they were registered at the tab level, hiding the tab bar would affect all tabs.
+**HomeStack nested inside the Home tab** — RestaurantDetails lives inside a stack so the bottom tab bar can be hidden on that screen without affecting the other tabs.
 
-**Drawer scoped to Profile** — The drawer only contains account-level actions (Orders, Settings, Help, Logout), so wrapping just the Profile tab makes more sense than a global drawer that would compete with the bottom tab gestures.
+**Drawer wraps the tabs** — The drawer navigator is mounted above the tab navigator in [src/screens/navigation.tsx](src/screens/navigation.tsx), but it is intentionally opened from the Profile screen through `navigation.openDrawer()`. That keeps the drawer available for account actions without making it part of every screen's primary gesture path.
 
-**Onboarding in AuthStack, not a separate navigator** — Onboarding is part of the pre-auth flow, so it belongs in the same stack as Login. After the user completes onboarding and logs in, a `reset` call prevents them from navigating back to either.
+**Onboarding in AuthStack, not a separate navigator** — Onboarding is part of the pre-auth flow, so it belongs in the same stack as Login. The onboarding splash uses `replace`, and the final onboarding screen uses `reset`, so the auth stack does not keep stale onboarding history.
 
 ---
 
 ## Auth Flow
 
-1. On launch, `AuthContext` reads a `userToken` from AsyncStorage.
-2. No token found → `AuthStack` renders (Onboarding → Login).
-3. `hasSeenOnboarding` flag in AsyncStorage gates whether onboarding shows. First launch shows it; subsequent launches go straight to Login.
-4. On login, token is saved to AsyncStorage, `isAuthenticated` flips to `true`, and the NavigationContainer re-renders `MainTabs`.
-5. On app reload with a saved token → user lands directly on `MainTabs`, no login required.
-6. Logout calls `logout()` (clears AsyncStorage), then `navigation.reset` wipes the stack and drops the user back to Login.
+1. On launch, [src/context/AuthContext.tsx](src/context/AuthContext.tsx) reads `@auth_user` from AsyncStorage.
+2. If no token is found, [src/screens/navigation.tsx](src/screens/navigation.tsx) renders the auth stack.
+3. On login or sign up, the token is saved to AsyncStorage and `isAuthenticated` flips to `true`.
+4. When auth state is restored after reload, the app goes straight to the authenticated root stack.
+5. Logout is handled in [src/components/CustomDrawerContent.tsx](src/components/CustomDrawerContent.tsx) and [src/screens/(tabs)/ProfileScreen.tsx](src/screens/(tabs)/ProfileScreen.tsx); `logout()` clears AsyncStorage and the navigator switches back to the auth stack.
 
 ---
 
@@ -175,26 +183,28 @@ App.tsx
 
 | Method | Used where |
 |---|---|
-| `navigate` | HomeScreen → RestaurantDetails (with params), RestaurantDetails → Cart |
-| `goBack` | Back buttons on RestaurantDetails and Cart |
-| `replace` | Onboarding final step → HomeScreen (user can't swipe back) |
-| `reset` | Logout → clears entire stack, renders LoginScreen |
+| `navigate` | [src/screens/(auth)/LoginScreen.tsx](src/screens/(auth)/LoginScreen.tsx) → Register/ForgotPassword, [src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingOneScreen.tsx) → OnboardingTwo, [src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingTwoScreen.tsx) → OnboardingThree, [src/components/FeaturedRestaurantCard.tsx](src/components/FeaturedRestaurantCard.tsx) and [src/components/SmallRestuarantCard.tsx](src/components/SmallRestuarantCard.tsx) → RestaurantDetails with params, [src/components/SearchRestaurantCard.tsx](src/components/SearchRestaurantCard.tsx) → nested Home > RestaurantDetails with params, [src/screens/(tabs)/RestaurantDetails.tsx](src/screens/(tabs)/RestaurantDetails.tsx) → Cart, [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx) → Home |
+| `goBack` | [src/screens/navigation.tsx](src/screens/navigation.tsx) back button on RestaurantDetails, [src/screens/CartScreen.tsx](src/screens/CartScreen.tsx), [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx), [src/screens/(auth)/ForgotPasswordScreen.tsx](src/screens/(auth)/ForgotPasswordScreen.tsx) |
+| `replace` | [src/screens/(auth)/(onboarding)/OnboardingScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingScreen.tsx) replaces the onboarding splash with Login |
+| `reset` | [src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx](src/screens/(auth)/(onboarding)/OnboardingThreeScreen.tsx) resets the stack before landing on Login |
 
 ---
 
 ## Passing Params
 
-Restaurant name and delivery fee are passed from `HomeScreen` to `RestaurantDetails`:
+Restaurant cards pass the restaurant data into `RestaurantDetails` from the list screens:
 
 ```typescript
 navigation.navigate('RestaurantDetails', {
-  restaurantId: item.id,
-  restaurantName: item.name,
-  deliveryFee: item.deliveryFee,
+  name,
+  priceForOne: priceForOne ?? '₹150 for one',
+  rating,
+  reviewCount,
+  deliveryTime,
 });
 ```
 
-The detail screen reads them via `route.params` and uses `restaurantName` as the header title.
+The detail screen reads them via `route.params` and uses `name` as the header title. The same destination is also reached from [src/components/SearchRestaurantCard.tsx](src/components/SearchRestaurantCard.tsx) via the nested `Home -> RestaurantDetails` path.
 
 ---
 
@@ -216,18 +226,22 @@ Scheme is configured in `app.json`:
 "scheme": "foodapp"
 ```
 
-Linking config in `navigation.tsx` maps `restaurant/:id` directly to `RestaurantDetails` inside the HomeStack:
+Linking config in `navigation.tsx` maps `restaurant/:id` directly to `RestaurantDetails` inside the nested tab stack:
 
 ```typescript
 const linking: LinkingOptions<RootParamList> = {
-  prefixes: ['foodapp://'],
+  prefixes: ['foodapp://', 'dishdash://', 'DishDash://'],
   config: {
     screens: {
-      MainTabs: {
+      Tabs: {
         screens: {
-          Home: {
+          TabsGroup: {
             screens: {
-              RestaurantDetails: 'restaurant/:restaurantId',
+              Home: {
+                screens: {
+                  RestaurantDetails: 'restaurant/:id',
+                },
+              },
             },
           },
         },
@@ -247,7 +261,7 @@ adb shell am start -W -a android.intent.action.VIEW -d "foodapp://restaurant/123
 npx uri-scheme open foodapp://restaurant/123 --android
 ```
 
-The app navigates directly to RestaurantDetails with the `restaurantId` param populated from the URL.
+The app navigates directly to RestaurantDetails with the `id` param populated from the URL.
 
 ---
 
@@ -258,8 +272,8 @@ src/
 ├── components/
 │   ├── atoms/
 │   │   └── SocialButton.tsx
-│   ├── CustomDrawerContent.tsx    # avatar + user name
-│   ├── CustomTabBar.tsx           # badge logic lives here
+│   ├── CustomDrawerContent.tsx    # avatar + user name + drawer actions
+│   ├── CustomTabBar.tsx           # tab icons, cart badge, animated cart banner
 │   ├── FeaturedRestaurantCard.tsx
 │   ├── MenuAddButton.tsx
 │   ├── SearchRestaurantCard.tsx
@@ -289,8 +303,8 @@ src/
 │   │   ├── SearchScreen.tsx
 │   │   ├── OrdersScreen.tsx
 │   │   └── ProfileScreen.tsx
-│   ├── CartScreen.tsx
-│   └── navigation.tsx             # all navigators in one place
+│   ├── CartScreen.tsx             # root stack screen with its own header and back button
+│   └── navigation.tsx             # root stack, tabs, drawer, and deep-link config
 └── theme/
     └── theme.ts
 ```
@@ -302,4 +316,4 @@ src/
 - Login is mocked — any non-empty email and password will authenticate.
 - Restaurant and order data is hardcoded locally; no external API calls are made.
 - The Orders screen shows a static list. The cart badge on the tab reflects real-time cart state; the order history list does not.
-- Deep linking navigates to RestaurantDetails regardless of auth state — if the user is unauthenticated, they see the Login screen first (React Navigation's default linking behaviour with a conditional navigator).
+- Deep linking is configured in [app.json](app.json) and [src/screens/navigation.tsx](src/screens/navigation.tsx). The example URI in this project is `foodapp://restaurant/123`.

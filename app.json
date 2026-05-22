@@ -2,7 +2,7 @@
   "expo": {
     "name": "dish-dash",
     "slug": "dish-dash",
-    "scheme": "dishdash",
+    "scheme": "foodapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

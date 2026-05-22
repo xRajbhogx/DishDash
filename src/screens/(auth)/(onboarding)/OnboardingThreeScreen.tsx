@@ -109,7 +109,7 @@ const OnboardingThreeScreen = ({ navigation }: Props): React.ReactElement => {
           </View>
 
           <Pressable 
-            onPress={() => navigation.navigate('Login')} 
+            onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })} 
             style={styles.getStartedButton}
           >
             <Text style={styles.getStartedText}>{ONBOARDING_THREE.ctaLabel}</Text>
